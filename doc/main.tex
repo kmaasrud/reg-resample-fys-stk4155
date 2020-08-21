@@ -1,0 +1,39 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{graphicx}   % Images
+\usepackage{subfiles}   % Include subfiles
+\usepackage{hyperref}   % Nice referencing with clickable links
+\usepackage{amsmath}    % Math
+\usepackage{biblatex}   % Citations
+\usepackage{csquotes}   % Honestly no idea what this does...
+
+\graphicspath{{img/}{../img/}}
+
+\title{Project 1}
+\author{Knut Magnus Aasrud \\ Philip Karim Niane}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\subfile{sections/abstract}
+
+\subfile{sections/introduction}
+
+\subfile{sections/theory}
+
+\subfile{sections/results}
+
+\subfile{sections/discussion}
+
+\subfile{sections/conclusion}
+
+\section{Appendix}
+
+% \printbibliography
+
+\end{document}
+

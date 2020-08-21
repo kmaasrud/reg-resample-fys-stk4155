@@ -23,6 +23,10 @@
 *.mtc1
 *.out
 *.synctex.gz
+*.bcf
+*.fdb_latexmk
+*.fls
+*.run.xml
 
 
 # Python ignores
