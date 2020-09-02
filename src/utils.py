@@ -7,3 +7,16 @@ def MSE(x, y):
 
     s /= N
     return s
+
+def R2(x, y):
+    deno=MSE(x,meanvalue(y))
+    R2=1-(MSE(x,y)/deno)
+    return R2
+
+def meanvalue(y):
+    N = len(y)
+
+    s = sum(y)
+
+    s /= N
+    return s
