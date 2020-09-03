@@ -4,6 +4,7 @@ from matplotlib import cm
 
 
 def franke(x, y):
+    """Franke's test function"""
     nineX = 9 * x
     nineY = 9 * y
     first = 0.75 * exp(-(nineX - 2)**2 * 0.25 - (nineY - 2)**2 * 0.25)
@@ -15,6 +16,7 @@ def franke(x, y):
 
 
 def plot_franke(N):
+    """Quick function to look at the Franke function in 3D"""
     x = y = linspace(0, 1, N)
     X, Y = meshgrid(x, y)
 
