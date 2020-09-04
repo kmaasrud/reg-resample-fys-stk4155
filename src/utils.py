@@ -14,7 +14,7 @@ def MSE(x, y):
 
 def R2(x, y):
     """Evaluates the R2 score of two lists/arrays"""
-    deno = MSE(x, np.full(len(x), meanvalue(y)))
+    deno = MSE(x, full(len(x), meanvalue(y)))
     R2 = 1 - MSE(x, y) / deno
     return R2
 
@@ -32,10 +32,14 @@ def make_data_matrices(func, *param_arrays):
         func -- The function to estimate
         *param_arrays -- A number of arrays corresponding to the number of parameters func takes"""
 
+    # Checks if the parameter arrays are all of equal length.
+    # If not, raises assertion error.
     is_arrays_equal_len = len({len(param_array)
-                               for param_array in param_arrays})
+                               for param_array in param_arrays}) == 1
     assert is_arrays_equal_len, "Parameter arrays are not of equal dimension."
 
+    # Checks that the supplied function actually takes the number of parameters supplied.
+    # If not, raises assertion error.
     is_func_args_len_equal_N = len(getargspec(func).args) == len(param_arrays)
     assert is_func_args_len_equal_N, "Function does not take the same number of parameters you have supplied."
 
