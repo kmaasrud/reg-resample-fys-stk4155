@@ -1,5 +1,5 @@
 from inspect import getargspec
-from numpy import array, linspace, full
+from numpy import array, linspace, full, ndarray
 
 
 def MSE(x, y):
@@ -14,7 +14,7 @@ def MSE(x, y):
 
 def R2(x, y):
     """Evaluates the R2 score of two lists/arrays"""
-    deno = MSE(x, meanvalue(y))
+    deno = MSE(x, np.full(len(x), meanvalue(y)))
     R2 = 1 - MSE(x, y) / deno
     return R2
 
@@ -40,7 +40,8 @@ def make_data_matrices(func, *param_arrays):
     assert is_func_args_len_equal_N, "Function does not take the same number of parameters you have supplied."
 
     N = len(param_arrays[0])
-    X = array([full(N, 1), *param_arrays])
+    # Transposing X to get the correct dimensionality
+    X = array([full(N, 1), *param_arrays]).T
     Y = func(*param_arrays)
 
     return X, Y
