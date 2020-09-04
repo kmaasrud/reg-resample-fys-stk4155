@@ -1,4 +1,6 @@
-from numpy import exp, linspace, meshgrid
+from numpy import (
+    exp, linspace, meshgrid
+)
 import matplotlib.pyplot as plt
 from matplotlib import cm
 
