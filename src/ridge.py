@@ -1,35 +1,37 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 import numpy as np
 
 np.random.seed(2020)        # set a seed to ensure reproducability
 
 
-class Ridge():
-    """
-    Class for preforming regression using the Ridge metod
-    """
+class OLS(Ridge):
+    """Class for preforming Ordinary Least Square fits without using any statistical package libraries."""
 
-    def __init__(self, x, y, lmb):
-        self.x = x
+    def __init__(self, X, y):
+        super().__init__(X, y, 0)
+
+
+class Ridge():
+    """Class for preforming regression using the Ridge method"""
+
+    def __init__(self, X, y, lmb):
+        # Check for correct type and dimensions
+        assert x.ndim == 2 and type(x) == np.ndarray, "Parameter X must be of type ndarray and have dimensionality 2."
+        assert y.ndim == 1 and type(y) == np.ndarray, "Parameter y must be of type ndarray and have dimensionality 1."
+
+        self.X = X
+        self.p = X.shape[0]
+        self.n = X.shape[1]
         self.y = y
         self.lmb = lmb
 
+        self.fit_beta()
+        self.y_predicted = self.X @ self.beta  # predicted values
+
     def fit_beta(self):
-	
-        I = np.eye(len(x[1]))
+        """Calculates the Ridge coefficient vector"""
+        I = np.eye(self.p)
         # matrix inversion to find beta
-        self.beta = np.linalg.inv(self.x.T @ self.x+self.lmb*I) @ self.x.T @ self.y
-
-        return self.beta
-
-    def predict(self):
-
-        p = len(self.beta)  # number of features p/ complexity of model
-        self.y_hat = self.x @ self.beta  # predicted values
-
-        return p, self.y_hat
+        self.beta = np.linalg.inv(self.X.T @ self.X + self.lmb*I) @ self.X.T @ self.y
 
 
 # simple test for linear case
