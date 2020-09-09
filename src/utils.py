@@ -19,7 +19,7 @@ def R2(x, y):
     return R2
 
 
-def meanvalue(y):
+def mean_value(y):
     """Evaluates the mean value of a list/array"""
     return sum(y) / len(y)
 
@@ -59,24 +59,26 @@ https://www.investopedia.com/ask/answers/042415/what-difference-between-standard
 X=Design matrix, beta=beta_array, CIpercent=How many percent of data that
 contains the mean value(Seems like 95% is quiet common), y=array with
 data from franke's function. y_pred=the predicted values, n=observations
-"""
+
+
+# Function is malfunctioning, so I'm just commenting it out now for testing
 def CI (X_matrix,beta,CIpercent,y,y_pred,n):
     #The different Zscores representing the CI percentages can be found online
-    if CIpercent=90:
-        Zscore=1.645
-    elif CIpercent=95:
-        Zscore=1.96
-    elif CIpercent=99:
-        Zscore=2.576
+    if CIpercent == 90:
+        Zscore = 1.645
+    elif CIpercent == 95:
+        Zscore = 1.96
+    elif CIpercent == 99:
+        Zscore = 2.576
 
-    p=len(beta)
+    p = len(beta)
 
-    sd=np.sqrt((1/(n−p−1))*np.sum((y-y_pred)∗∗2))  #Standard deviation
+    sd = np.sqrt((1/(n−p−1))*np.sum((y-y_pred)∗∗2))  #Standard deviation
     cov_matrix = sd**2*np.linalg.inv(X_matrix.T.dot(X_matrix))
     variance = np.diag(cov_matrix)                 #Variance of betas along diagonal
 
-    CI_min=[]
-    CI_max=[]
+    CI_min = []
+    CI_max = []
 
     for i in range(p):
         variety=np.sqrt(variance[i]/n)*Zscore
@@ -86,3 +88,4 @@ def CI (X_matrix,beta,CIpercent,y,y_pred,n):
         CI_max.append(CI_max_value)
 
     return CI_min, CI_max    #Returns two lists
+"""

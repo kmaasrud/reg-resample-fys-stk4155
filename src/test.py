@@ -3,16 +3,15 @@ from numpy.random import rand
 
 from utils import make_data_matrices
 from franke import franke
-from ols import OLS
+from regression_methods import OLS, Ridge
 from plotting import plot3D
 
 
 N = 1000
-X, Y = make_data_matrices(franke, rand(N), rand(N))
+X, y = make_data_matrices(franke, rand(N), rand(N))
 
-ols = OLS(X, Y)
-beta = ols.fit_beta()
-p, Y_hat = ols.predict()
+ols = OLS(X, y)
+ridge = Ridge(X, y, 4)
 
-plot3D(X.T[1], X.T[2], Y, Y_hat)
+plot3D(X.T[1], X.T[2], y, ridge.y_predicted)
 plt.show()
