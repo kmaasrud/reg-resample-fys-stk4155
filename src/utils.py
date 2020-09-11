@@ -50,6 +50,27 @@ def make_data_matrices(func, *param_arrays):
 
     return X, Y
 
+# SVD inversion
+import numpy as np
+def SVDinv(A):
+    ''' Morten recommended us to use this code from the lecture slides for inverting
+    the matrices while working on the terrain data.
+
+    Takes as input a numpy matrix A and returns inv(A) based on singular value decomposition (SVD).
+    SVD is numerically more stable than the inversion algorithms provided by
+    numpy and scipy.linalg at the cost of being slower.
+    '''
+    U, s, VT = np.linalg.svd(A)
+
+    #print(U)
+    #print(s)
+    #print(VT)
+
+    D = np.zeros((len(U),len(VT)))
+    for i in range(0,len(VT)):
+        D[i,i]=s[i]
+    UT = np.transpose(U); V = np.transpose(VT); invD = np.linalg.inv(D)
+    return np.matmul(V,np.matmul(invD,UT))
 
 """
 Confidence intervals. A lot of arguments, so might be better to move it
