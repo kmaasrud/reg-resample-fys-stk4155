@@ -1,5 +1,6 @@
 from inspect import getargspec
-from numpy import array, linspace, full, ndarray
+import numpy as np
+from itertools import product
 
 
 def MSE(x, y):
@@ -14,7 +15,7 @@ def MSE(x, y):
 
 def R2(x, y):
     """Evaluates the R2 score of two lists/arrays"""
-    deno = MSE(x, full(len(x), meanvalue(y)))
+    deno = MSE(x, np.full(len(x), mean_value(y)))
     R2 = 1 - MSE(x, y) / deno
     return R2
 
@@ -24,13 +25,15 @@ def mean_value(y):
     return sum(y) / len(y)
 
 
-def make_data_matrices(func, *param_arrays):
-    """Takes in a function and a number of parameter vectors and returns
-    the design matrix X as well as the true function value array Y.
+def make_design_matrix(*param_arrays, poly_deg=1):
+    """Takes a collection of input arrays and returns the corresponding design matrix.
+    The keyword argument poly_deg specifies which degree polynomial you want the design matrix to depict.
 
     Arguments:
-        func -- The function to estimate
-        *param_arrays -- A number of arrays corresponding to the number of parameters func takes"""
+        *param_arrays -- A number of input arrays.
+
+    Keyword arguments:
+        poly_deg -- The desired polynomial degree (default = 1)."""
 
     # Checks if the parameter arrays are all of equal length.
     # If not, raises assertion error.
@@ -38,20 +41,26 @@ def make_data_matrices(func, *param_arrays):
                                for param_array in param_arrays}) == 1
     assert is_arrays_equal_len, "Parameter arrays are not of equal dimension."
 
-    # Checks that the supplied function actually takes the number of parameters supplied.
+    # Checks that all the input arrays are of type numpy.ndarray.
     # If not, raises assertion error.
-    is_func_args_len_equal_N = len(getargspec(func).args) == len(param_arrays)
-    assert is_func_args_len_equal_N, "Function does not take the same number of parameters you have supplied."
+    is_params_ndarray = not False in set(type(x) == np.ndarray for x in param_arrays)
+    assert is_params_ndarray, "The input arrays must be of type numpy.ndarray"
 
-    N = len(param_arrays[0])
-    # Transposing X to get the correct dimensionality
-    X = array([full(N, 1), *param_arrays]).T
-    Y = func(*param_arrays)
+    n_inputs = len(param_arrays)
+    polynomial_permutations = [perm for perm in product(range(poly_deg + 1), repeat=n_inputs) if sum(perm) == poly_deg]
+    p = len(polynomial_permutations)
+    n = len(param_arrays[0])
 
-    return X, Y
+    X = np.ones((p + 1, n))
+
+    for i, perm in enumerate(polynomial_permutations):
+        for j, power in enumerate(perm):
+            X[i+1, :] *= param_arrays[j] ** power
+
+    return X
+
 
 # SVD inversion
-import numpy as np
 def SVDinv(A):
     ''' Morten recommended us to use this code from the lecture slides for inverting
     the matrices while working on the terrain data.
@@ -60,6 +69,8 @@ def SVDinv(A):
     SVD is numerically more stable than the inversion algorithms provided by
     numpy and scipy.linalg at the cost of being slower.
     '''
+    import numpy as np
+
     U, s, VT = np.linalg.svd(A)
 
     #print(U)
@@ -67,8 +78,8 @@ def SVDinv(A):
     #print(VT)
 
     D = np.zeros((len(U),len(VT)))
-    for i in range(0,len(VT)):
-        D[i,i]=s[i]
+    for i in range(len(VT)):
+        D[i,i] = s[i]
     UT = np.transpose(U); V = np.transpose(VT); invD = np.linalg.inv(D)
     return np.matmul(V,np.matmul(invD,UT))
 
