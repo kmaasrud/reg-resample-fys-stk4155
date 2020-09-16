@@ -1,23 +1,86 @@
 \documentclass[../main.tex]{subfiles}
 
 \begin{document}
+
 \section{Theory}\label{sec:theory}
-  \subsection{Franke's function}
-Franke's function is a function which is quiet often used to test different regression and interpolation methods. The function has two Gaussian peaks of different heights, and a smaller dip, which makes it quiet convenient for testing interpolation methods and algorithms. The function reads as follows:
+
+\subsection{Franke's function}
+Franke's function is a function which is often used to test different regression and interpolation methods. The function has two Gaussian peaks of differing heights, and a smaller dip. It's expression is
 
 \begin{align*}
-f(x,y) &= \frac{3}{4}\exp{\left(-\frac{(9x-2)^2}{4} - \frac{(9y-2)^2}{4}\right)}+\frac{3}{4}\exp{\left(-\frac{(9x+1)^2}{49}- \frac{(9y+1)}{10}\right)} \\
-&+\frac{1}{2}\exp{\left(-\frac{(9x-7)^2}{4} - \frac{(9y-3)^2}{4}\right)} -\frac{1}{5}\exp{\left(-(9x-4)^2 - (9y-7)^2\right) }.
+  f(x,y) &= \frac{3}{4}\exp{\left(-\frac{(9x-2)^2}{4} - \frac{(9y-2)^2}{4}\right)}+\frac{3}{4}\exp{\left(-\frac{(9x+1)^2}{49}- \frac{(9y+1)}{10}\right)} \\
+  &+\frac{1}{2}\exp{\left(-\frac{(9x-7)^2}{4} - \frac{(9y-3)^2}{4}\right)} -\frac{1}{5}\exp{\left(-(9x-4)^2 - (9y-7)^2\right) }.
 \end{align*}
 
-The functions defined interval is $x,y\in[0,1]$. The shape of the function can be seen in figure \ref{fig:frankesplot}
+and we define it for the interval $x,y\in[0,1]$. An illustration of Franke's function can be seen in figure \ref{fig:frankesplot}
 
 \begin{figure}
-\centering
-\includegraphics[width = 3in]{frankesfunction_plot.png}
-\caption{Shape of Franke's function which will be used as a interpolating goal.
-\\Note to self: Might be better to plot the graph instead of using a figure from the web. Remember to add the source for the figure by using for example bib. https://www.sfu.ca/~ssurjano/franke2d.html}
-\label{fig:frankesplot}
+  \centering
+  \includegraphics[width = 3in]{frankesfunction_plot.png}
+  \caption{Shape of Franke's function which will be used as a interpolating goal.
+  \\Note to self: Might be better to plot the graph instead of using a figure from the web. Remember to add the source for the figure by using for example bib. https://www.sfu.ca/~ssurjano/franke2d.html}
+  \label{fig:frankesplot}
 \end{figure}
+
+
+\subsection{Linear regression}
+The goal of a linear regression model is to find the coefficients $\hat{\mathbf \beta}$ best suited for predicting new data via this expression:
+
+\begin{equation*}
+  \hat{\mathbf y} = \mathbf X\hat{\mathbf \beta},
+\end{equation*}
+
+where $\mathbf X$ is the design matrix constructed from the input data, and $\hat{\mathbf y}$ is the resulting prediction. To achieve this, we define a "cost function" of sorts, that evaluates each coefficients ability to predict the initial training dataset. We then find the $\hat{\mathbf \beta}$ that minimizes this cost function. More formally put, we want to find
+
+\begin{equation}
+  \hat{\mathbf \beta} = \underset{\beta}{\arg \min}\ C(\beta),
+\end{equation}
+
+where $C(\beta)$ is the cost function.
+
+
+\subsubsection{Ordinary least squares regression ($L_0$)}
+Ordinary least squares (OLS) regression uses the residual sum of squares (RSS) function as the cost function. Given $N$ datapoints and the predicted output $\mathbf y$, it reads
+
+\begin{equation}
+  \label{eq:rss}
+  \text{RSS}(\beta) = \sum_{i=1}^N (y_i - \hat y_i)^2.
+\end{equation}
+
+As found in \hyperref[sec:L0_matrix_form]{appendix \ref*{sec:L0_matrix_form}}, a cost function like (\ref{eq:rss}) gives the following matrix equation for $\hat{\mathbf \beta}$
+
+\begin{equation}
+  \label{eq:L0_matrix_form}
+  \hat \beta = (\mathbf X^T\mathbf X)^{-1}\mathbf X^T \mathbf y
+\end{equation}
+
+OLS regression has very low variance, but high bias - as a consequence of the bias-variance tradeoff. This makes OLS regression an "accurate" predictor of its own training data, but susceptible to overfitting, which the following two models are better suited to handle.
+
+
+\subsubsection{Lasso regression ($L_1$)}
+Lasso regression expands upon the above cost function by adding a term that penalizes the size of each coefficient. This is done by a factor of $\lambda$, as shown here:
+
+\begin{equation}
+  \label{eq:L1_algo}
+  \hat{\mathbf \beta} = \underset{\beta}{\arg \min} \begin{Bmatrix}\sum_{i=1}^N\left(y_i - \beta_0 - \sum_{j=1}^p x_{ij}\beta_j\right)^2 + \lambda \sum_{j=1}^p |\beta_j| \end{Bmatrix} .
+\end{equation}
+
+The first sum is from the RSS function, while the second sum is the imposed penalty. The Lasso decreases bias from the OLS model, by decreasing the size of the coefficients, and thus making the variables more equally weighted. \\
+
+Lasso regression has no closed form expression for $\hat{\mathbf \beta}$, which means it must be calculated programatically.
+
+
+\subsubsection{Ridge regression ($L_2$)}
+Ridge regression has a penalty corresponding to the coefficient's squared sizes, further decreasing the bias from The Lasso, but obviously also increases variance. It defines $\hat{\mathbf \beta}$ like this
+
+\begin{equation*}
+  \hat \beta^{\text{ridge}} = \underset{\beta}{\arg \min} \begin{Bmatrix}\sum_{i=1}^N\left(y_i - \beta_0 - \sum_{j=1}^p x_{ij}\beta_j\right)^2 + \lambda \sum_{j=1}^p \beta_j^2 \end{Bmatrix},
+\end{equation*}
+
+which - by the same proceedure as shown in \hyperref[sec:L0_matrix_form]{appenix \ref*{sec:L0_matrix_form}}, has this closed form expression
+
+\begin{equation}
+  \hat \beta^{\text{ridge}} = (\mathbf X^T\mathbf X + \lambda \mathbf I)^{-1}\mathbf X^T\mathbf y.
+\end{equation}
 
 \end{document}

@@ -1,0 +1,38 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+\section{Appendix}
+\subsection{Source code}
+All the source code is located in \href{https://github.com/kmaasrud/reg-resample-fys-stk4155}{this GitHub repository}.
+
+\subsection{$L_0$ regression on matrix form}
+\label{sec:L0_matrix_form}
+The cost function we use for OLS regression is the residual sum of squares (RSS) function:
+
+\begin{equation*}
+  \text{RSS}(\beta) = \sum_{i=1}^N \left(y_i - \hat y_i\right)^2 .
+\end{equation*}
+
+Changing into matrix notation, we get
+
+\begin{equation*}
+  \text{RSS}(\beta) = (\mathbf y - \hat{\mathbf y})^T(\mathbf y - \hat{\mathbf y}) = (\mathbf y  - \mathbf X\beta)^T(\mathbf y - \mathbf X\beta) ,
+\end{equation*}
+
+which we can differentiate with respect to $\beta$ to find the minimum.
+
+\begin{equation*}
+  \frac{\partial \text{RSS}}{\partial \beta} = -2\mathbf X^T (\mathbf y - \mathbf X\beta) .
+\end{equation*}
+
+Assuming full column rank for $\mathbf X$, $(\mathbf X^T \mathbf X)$ is thus positive definite (and importantly, invertible). Setting the first derivative to $0$, we get
+
+\begin{equation*}
+  \mathbf X^T(\mathbf y - \mathbf X\beta) = 0
+\end{equation*}
+
+\begin{equation*}
+  \Rightarrow \hat \beta = (\mathbf X^T\mathbf X)^{-1}\mathbf X^T \mathbf y
+\end{equation*}
+
+\end{document}
