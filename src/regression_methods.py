@@ -23,7 +23,7 @@ class Ridge():
     def fit_beta(self):
         """Calculates the Ridge coefficient vector"""
         I = np.eye(self.p)
-        # matrix inversion to find beta
+        # Matrix inversion to find beta
         self.beta = np.linalg.inv(self.X.T @ self.X + self.lmb*I) @ self.X.T @ self.y
 
 class OLS(Ridge):

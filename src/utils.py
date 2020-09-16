@@ -51,11 +51,11 @@ def make_design_matrix(*param_arrays, poly_deg=1):
     p = len(polynomial_permutations)
     n = len(param_arrays[0])
 
-    X = np.ones((p + 1, n))
+    X = np.ones((n, p + 1))
 
     for i, perm in enumerate(polynomial_permutations):
         for j, power in enumerate(perm):
-            X[i+1, :] *= param_arrays[j] ** power
+            X[:, i+1] *= param_arrays[j] ** power
 
     return X
 
