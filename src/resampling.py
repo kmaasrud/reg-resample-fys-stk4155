@@ -2,6 +2,23 @@ import numpy as np
 from random import shuffle
 import math
 from utils import R2    #Correct?
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+
+def split_and_scale(X, y):
+    """
+    Function that splits the data in test and training data and scale the data.
+    4/5 of the data is training data.
+    """
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+    
+    scaler = StandardScaler()
+    scaler.fit(X_train)
+    X_train_scaled = scaler.transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+    
+    return X_train, X_test, y_train, y_test
 
 """Function that splits the data into folds. n=amount of observations,
 k= the amount of folds that the data is going to be split into.
