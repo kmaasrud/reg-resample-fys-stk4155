@@ -2,15 +2,27 @@ from inspect import getargspec
 import numpy as np
 from itertools import product
 
+class mean_square:
+    """Evaluates the mean squared error between two lists/arrays."""
+    def __init__(self, x=[], y=[]):
+        self.xvals = x
+        self.yvals = y
+
+    def add_vals(self, x, y):
+        self.xvals.append(x)
+        self.yvals.append(y)
+
+    def result(self):
+        s = 0
+        for xval, yval in zip(self.xvals, self.yvals):
+            s += (xval - yval)**2
+        s /= len(self.xvals)
+
+        return s
 
 def MSE(x, y):
-    """Evaluates the mean squared error between two lists/arrays."""
-    s = 0
-    for xval, yval in zip(x, y):
-        s += (xval - yval)**2
-
-    s /= len(x)
-    return s
+    """Wrapper function for mean_square class"""
+    return mean_square(x, y).result()
 
 
 def R2(x, y):

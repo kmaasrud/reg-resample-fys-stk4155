@@ -20,41 +20,7 @@ def split_and_scale(X, y):
     
     return X_train, X_test, y_train, y_test
 
-"""Function that splits the data into folds. n=amount of observations,
-k= the amount of folds that the data is going to be split into.
-The function returns a nested list of the folds"""
 
-def kfolds(x,k):
-    np.random.seed(4155)
-
-    #Can use the kfold model from sklearn to compare to our own code
-    #if we want to
-    #from sklearn.model_selection import KFold
-    #kfold=KFold(n_splits=k)
-
-    data=len(x)
-    #Amount of data per fold:
-    fold_length=math.floor(((data)/k))
-    #shuffles the data
-    np.random.shuffle(x)
-    #Determines how many extra observations thats not enough to make
-    #a whole fold. Will be scattered around the already made folds
-    excessive_data=data-(fold_length*k)
-    folds_k=[]
-
-    for i in range(k):
-        start=fold_length*i
-        end=fold_length*(i+1)
-        a_fold=x[start : end]
-        folds_k.append(a_fold)
-
-    if excessive_data>0:
-        for i in range(excessive_data):
-
-            xx=x[(fold_length*k)+i]
-            folds_k[i].append(xx)
-
-    return folds_k
 """
 Small test for kfolds
 z=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]
@@ -96,10 +62,13 @@ def CV_ridge(x,y,z,nlambdas,k,d,m):
 
         #Choosing the method:
         if m==1:
+            pass
             #OLS()
         elif m==2:
+            pass
             #Ridge()
         elif m==3:
+            pass
             #Lasso()
 
         test_error_val=sum((z_test - z_pred_test)**2)/len(z_test)
@@ -109,9 +78,10 @@ def CV_ridge(x,y,z,nlambdas,k,d,m):
         test_error.append(test_error_val)
         train_error.append(train_error_val)
         R2_score.append(R2_val)
-
     test_error_mean = np.mean(test_error)
     train_error_mean = np.mean(train_error)
     R2_score_mean = np.mean(R2_score)
 
     return test_error_mean, train_error_mean, R2_score_mean
+
+
