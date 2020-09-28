@@ -17,14 +17,16 @@ class Ridge():
         self.y = y
         self.lmb = lmb
 
-        self.fit_beta()
-        self.y_predicted = self.X @ self.beta  # predicted values
+        self.beta = self.fit_beta()
 
     def fit_beta(self):
         """Calculates the Ridge coefficient vector"""
         I = np.eye(self.p)
         # Matrix inversion to find beta
-        self.beta = np.linalg.inv(self.X.T @ self.X + self.lmb*I) @ self.X.T @ self.y
+        return np.linalg.inv(self.X.T @ self.X + self.lmb*I) @ self.X.T @ self.y
+
+    def predict(self, X):
+        return X @ self.beta
 
 class OLS(Ridge):
     """Class for preforming Ordinary Least Square fits without using any statistical package libraries."""
