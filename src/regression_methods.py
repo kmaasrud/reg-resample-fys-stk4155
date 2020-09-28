@@ -4,7 +4,7 @@ np.random.seed(2020)        # set a seed to ensure reproducability
 
 
 class Ridge():
-    """Class for preforming regression using the Ridge method"""
+    """Class for performing regression using the Ridge method"""
 
     def __init__(self, X, y, lmb):
         # Check for correct type and dimensions
@@ -29,10 +29,20 @@ class Ridge():
         return X @ self.beta
 
 class OLS(Ridge):
-    """Class for preforming Ordinary Least Square fits without using any statistical package libraries."""
+    """Class for performing Ordinary Least Square fits without using any statistical package libraries."""
 
     def __init__(self, X, y):
         super().__init__(X, y, 0)
+
+class Lasso(Ridge):
+        """Class for performing Lasso regression using sklearn"""
+
+        def __init__(self, X,y):
+            super().__init__(X, y, 0)
+
+        def predict(self, X_input, value):
+            sklearn_lasso = linear_model.Lasso(alpha= value)
+            return sklearn_lasso.fit(X_input)
 
 
 # simple test for linear case
@@ -42,8 +52,7 @@ if __name__ == '__main__':
     nlambdas = 20
     lambdas = np.logspace(-4, 1, nlambdas)
     for i in range(nlambdas):
-        lmb = lambdas[i] 
+        lmb = lambdas[i]
     Ridge_test = Ridge(x, y,lmb)
     beta = Ridge_test.fit_beta()
     p, y_hat = Ridge_test.predict()
-
