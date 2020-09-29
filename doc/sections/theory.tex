@@ -22,6 +22,58 @@ and we define it for the interval $x,y\in[0,1]$. An illustration of Franke's fun
   \label{fig:frankesplot}
 \end{figure}
 
+\subsubsection{The Vandermonde matrix applied to Franke's function}
+
+When performing the different regression methods, it is important to sort the data into a well designed system for easy access and easier calculations. The data which is to be used during the calculations is sorted into a so called Vandermonde matrix, which is also known as a design matrix. A Vandermonde matrix is a matrix where the rows is built up by geometric progression \cite{vandermonde}.\\
+
+Franke's function is a two dimensional function defined by the components x and y. Then it is instinctive to have a design matrix X also built up by x and y components into a $n\cross p$ matrix, the following way
+
+\[
+\begin{array}{lcccccc}
+  \verb|X=| & \left(\begin{array}{@{}ccccccc@{}}
+    x_0 & y_0 & x_0^2 & x_0y_0 & y_0^2 & \ldots & x_0^d y_0^{p-d}\\
+    x_1 & y_1 & x_1^2 & x_1y_1 & y_1^2 & \ldots & x_1^d y_1^{p-d}\\
+     &  &  &  &  & \vdots & \\
+    x_{n-1} & y_{n-1} & x_{n-1}^2 & x_{n-1}y_{n-1} & y_{n-1}^2 & \ldots & x_{n-1}^d y_{n-1}^{p-d}\\
+ \end{array}\right) \\[15pt]
+\end{array}
+\]
+
+Where the d is the degree of polynomial. Making the degree higher leads to more complicated equations which naturally gives a more precise regression. Having a design matrix built up by too many terms per polynomial increases the possibility of eventually getting an over fitting model, which will be discussed later in the article.\\
+
+By having different weights $\Beta$ in front of each term in the design matrix, it is possible to calculate how large each term in the polynomials should be in order to make the best approximation. This is the clue of having a design matrix built up by x and y components, making it possible to approximate the polynomials which will fit the Franke's function best. Then the approximation can be written as the following
+
+\begin{equation}
+    \tilde{y}=X\beta+\epsilon
+\end{equation}
+
+Where $\epsilon$ is the error. This can be written as
+
+\[
+\begin{array}{lccccccc}
+  \verb|\tilde{y}=| & \left(\begin{array}{@{}cccccccc@{}}
+    \epsilon_0 & \beta_0 x_0 &  \beta_1 y_0 &  \beta_2 x_0^2 &  \beta_3 x_0y_0 &  \beta_4 y_0^2 & \ldots &  \beta_5 x_0^d y_0^{p-d}\\
+    \epsilon_1 & \beta_0 x_1 &  \beta_1 y_1 &  \beta_2 x_1^2 &  \beta_3 x_1y_1 &  \beta_4 y_1^2 & \ldots &  \beta_5 x_1^d y_1^{p-d}\\
+     &  &  &  &  & \vdots & \\
+    \epsilon_{n-1} & \beta_0 x_{n-1} & \beta_1 y_{n-1} & \beta_2 x_{n-1}^2 & \beta_3 x_{n-1}y_{n-1} & \beta_4 y_{n-1}^2 & \ldots & \beta_5 x_{n-1}^d y_{n-1}^{p-d}\\
+ \end{array}\right) \\[15pt]
+\end{array}
+\]
+
+
+
+\begin{comment}
+Reference to be added to the bib file:
+  @misc{vandermonde,
+    author = "{Wikipedia contributors}",
+    title = "Vandermonde matrix --- {Wikipedia}{,} The Free Encyclopedia",
+    year = "2020",
+    howpublished = "\url{https://en.wikipedia.org/w/index.php?title=Vandermonde_matrix&oldid=980114781}",
+    note = "[Online; accessed 29-September-2020]"
+  }
+\end{comment}
+
+
 
 \subsection{Linear regression}
 The goal of a linear regression model is to find the coefficients $\hat{\mathbf \beta}$ best suited for predicting new data via this expression:
