@@ -2,18 +2,21 @@ import numpy as np
 from sklearn.utils import resample
 from resampling import split_and_scale
 from regression_methods import OLS 
+from utils import MSE, mean_value
 
-max_degree = 5 # polynomials in x and y up to fifth order
     
-def bootstrap(X, y_data, N_bootstraps, degree):
+def bootstrap(X, y_data, N_bootstraps, method, lmb=0):
     X_train, X_test, y_train, y_test = split_and_scale(X, y_data)
-    for degree in range(max_degree):
-        # (m x N_bootstraps) to hold the column vectors y_predict for each boostrap iteration
-        y_predict_train = np.empty((y_train.shape[0], N_bootstraps))
-        y_predict_test = np.empty((y_test.shape[0], N_bootstraps))
-        for i in range(N_bootstraps):
-            X_, y_ = resample(X_train, y_train)
+    MSEs = []
+    for i in range(N_bootstraps):
+        X_, y_ = resample(X_train, y_train)
 
-            y_predict_train[:,i] = OLS(X_, y_)
-            y_predict_test[:,i] = OLS(X_, y_)
-    return y_predict_train
+        if method == OLS:
+            model = method(X_, y_)
+        else:
+            model = method(X_, y_, lmb)
+
+        y_predict_bootstrap = X_test @ model.beta
+        MSEs.append(MSE(y_predict_bootstrap, y_test))
+
+    return mean_value(MSEs)
