@@ -6,15 +6,6 @@ from matplotlib import cm
 import os
 import pandas as pd
 
-random.seed(2020)
-
-N = 100
-sigma = 1
-
-# Make data 
-x = random.rand(N)
-y = random.rand(N)
-noise = random.normal(0, sigma, size=N)
 
 def franke(x, y, noise_sigma=0, noise=False):
     """Franke's test function"""
@@ -31,25 +22,36 @@ def franke(x, y, noise_sigma=0, noise=False):
 
     return first + second + third + fourth + rand
 
-data = franke(x, y) + noise
+def make_franke_data():
+    random.seed(2020)
 
-names = ["franke", "data", "N", str(N), "sigma", str(sigma)]
-outfilename = "_".join(names) + ".csv"
+    N = 100
+    sigma = 1
 
-path = "data"
-if not os.path.exists(path):
-    os.makedirs(path)
+    # Make data 
+    x = random.rand(N)
+    y = random.rand(N)
+    noise = random.normal(0, sigma, size=N)
 
-franke_data = {'x': x,
-        'y': y,
-        'data': data
-        }
+    data = franke(x, y) + noise
 
-df = pd.DataFrame(franke_data, columns= ['x', 'y', 'data'])
+    names = ["franke", "data", "N", str(N), "sigma", str(sigma)]
+    outfilename = "_".join(names) + ".csv"
 
-df.to_csv ('./' + path + '/' + outfilename, index = False, header=True)
+    path = "data"
+    if not os.path.exists(path):
+        os.makedirs(path)
 
-df.to_csv (outfilename, index = False, header=True)
+    franke_data = {'x': x,
+            'y': y,
+            'data': data
+            }
+
+    df = pd.DataFrame(franke_data, columns= ['x', 'y', 'data'])
+
+    df.to_csv ('./' + path + '/' + outfilename, index = False, header=True)
+
+    df.to_csv (outfilename, index = False, header=True)
 
 def plot_franke(N):
     """Quick function to look at the Franke function in 3D"""

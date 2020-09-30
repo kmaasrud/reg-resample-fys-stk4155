@@ -2,6 +2,7 @@ from numba import jit
 from inspect import getargspec
 import numpy as np
 from itertools import product
+from sklearn import model_selection, preprocessing
 
 class mean_square:
     """Evaluates the mean squared error between two lists/arrays."""
@@ -38,6 +39,7 @@ def mean_value(y):
     return sum(y) / len(y)
 
 
+@jit
 def design_matrix(x, y, d):
     """Function for setting up a design X-matrix with rows [1, x, y, x², y², xy, ...]
     Input: x and y mesh, keyword argument d is the degree.
@@ -94,14 +96,25 @@ def make_design_matrix(*param_arrays, poly_deg=1):
     for i, perm in enumerate(polynomial_permutations):
         term = 0
         for j, power in enumerate(perm):
-            temp = np.array([x**power for x in param_arrays[j]])
-            term *= temp
-
-        X[:, i+1] = term
-            #X[:, i+1] = X[:, i+1] * param_arrays[j] ** power
+            X[:, i+1] *= param_arrays[j] ** power
 
 
     return X
+
+
+def split_and_scale(X, y, test_size=0.2):
+    """
+    Function that splits the data in test and training data and scale the data.
+    4/5 of the data is training data.
+    """
+    X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=test_size)
+    
+    scaler = preprocessing.StandardScaler()
+    scaler.fit(X_train)
+    X_train_scaled = scaler.transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+    
+    return X_train, X_test, y_train, y_test
 
 
 # SVD inversion
@@ -128,16 +141,6 @@ def SVDinv(A):
     return np.matmul(V,np.matmul(invD,UT))
 
 
-def alternate_design_matrix(x, y, deg):
-        # features
-        p = int(0.5*( (deg+1)*(deg+2) ))
-        X = np.zeros((len(x),p))
-        idx=0
-        for i in range(deg+1):
-            for j in range(deg+1-i):
-                X[:,idx] = x**i * y**j
-                idx += 1
-        return X
 """
 Confidence intervals. A lot of arguments, so might be better to move it
 outside a function. Note to self: Remember to test the function, and doublecheck the formulas found at the following site

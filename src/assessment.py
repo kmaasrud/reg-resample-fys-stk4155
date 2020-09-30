@@ -1,8 +1,7 @@
 import numpy as np
 from sklearn.utils import resample
-from utils import mean_square, mean_value, MSE
+from utils import mean_square, mean_value, MSE, split_and_scale
 from regression_methods import OLS
-from resampling import split_and_scale
 
 
 def kfolds(X, y, k):

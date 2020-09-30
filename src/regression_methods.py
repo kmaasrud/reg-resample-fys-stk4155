@@ -1,4 +1,5 @@
 import numpy as np
+from sklearn import linear_model
 from numba import jit
 
 np.random.seed(2020)        # set a seed to ensure reproducability
@@ -36,15 +37,15 @@ class OLS(Ridge):
         super().__init__(X, y, 0)
 
 class Lasso(Ridge):
-        """Class for performing Lasso regression using sklearn"""
+    """Class for performing Lasso regression using sklearn"""
 
-        def __init__(self, X,y):
-            super().__init__(X, y, 0)
+    def __init__(self, X, y, lmb):
+        super().__init__(X, y, lmb)
 
-        def predict(self, X_input, value):
-            sklearn_lasso = linear_model.Lasso(alpha= value)
-            return sklearn_lasso.fit(X_input)
-
+    def fit_beta(self):
+        sklearn_lasso = linear_model.Lasso(alpha=self.lmb)
+        sklearn_lasso.fit(self.X, self.y)
+        return sklearn_lasso.coef_
 
 # simple test for linear case
 if __name__ == '__main__':
