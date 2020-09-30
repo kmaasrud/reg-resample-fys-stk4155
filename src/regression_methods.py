@@ -1,4 +1,5 @@
 import numpy as np
+from numba import jit
 
 np.random.seed(2020)        # set a seed to ensure reproducability
 

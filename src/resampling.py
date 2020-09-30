@@ -6,12 +6,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
 
-def split_and_scale(X, y):
+def split_and_scale(X, y, test_size=0.2):
     """
     Function that splits the data in test and training data and scale the data.
     4/5 of the data is training data.
     """
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size)
     
     scaler = StandardScaler()
     scaler.fit(X_train)

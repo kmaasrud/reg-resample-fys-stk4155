@@ -1,3 +1,4 @@
+from numba import jit
 import numpy as np 
 from sklearn.utils import resample
 from resampling import split_and_scale
@@ -5,6 +6,7 @@ from regression_methods import OLS
 from utils import MSE, mean_value
 
     
+@jit
 def bootstrap(X, y_data, N_bootstraps, method, lmb=0):
     X_train, X_test, y_train, y_test = split_and_scale(X, y_data)
     MSEs = []
