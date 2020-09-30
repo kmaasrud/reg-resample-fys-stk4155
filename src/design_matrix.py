@@ -10,7 +10,7 @@ def design_matrix(x, y, d):
 
     """
     Function for setting up a design X-matrix with rows [1, x, y, x², y², xy, ...]
-    Input: x and y mesh, keyword argument k/n/d is the degree.
+    Input: x and y mesh, keyword argument d is the degree.
     """
     
     if len(x.shape) > 1:
