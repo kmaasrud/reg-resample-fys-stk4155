@@ -160,7 +160,7 @@ def CI (X_matrix,beta,CIpercent,y,y_pred,n):
 
     p = len(beta)
 
-    sd = np.sqrt((1/(n−p−1))*np.sum((y-y_pred)∗∗2))  #Standard deviation
+    sd = np.sqrt((1/(n-p-1))*np.sum((y-y_pred)**2))  #Standard deviation
     cov_matrix = sd**2*np.linalg.inv(X_matrix.T.dot(X_matrix))
     variance = np.diag(cov_matrix)                 #Variance of betas along diagonal
 
