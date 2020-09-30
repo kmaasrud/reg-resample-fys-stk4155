@@ -1,4 +1,9 @@
-\documentclass[../main.tex]{subfiles}
+\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+   \centering
+   \includegraphics[width=2in]{example.jpg} 
+   \caption{example caption}
+   \label{fig:example}
+\end{figure}\documentclass[../main.tex]{subfiles}
 
 \begin{document}
 
@@ -29,12 +34,12 @@ When performing the different regression methods, it is important to sort the da
 Franke's function is a two dimensional function defined by the components x and y. Then it is instinctive to have a design matrix X also built up by x and y components into a $n\cross p$ matrix, the following way
 
 \[
-\begin{array}{lcccccc}
-  \verb|X=| & \left(\begin{array}{@{}ccccccc@{}}
-    x_0 & y_0 & x_0^2 & x_0y_0 & y_0^2 & \ldots & x_0^d y_0^{p-d}\\
-    x_1 & y_1 & x_1^2 & x_1y_1 & y_1^2 & \ldots & x_1^d y_1^{p-d}\\
-     &  &  &  &  & \vdots & \\
-    x_{n-1} & y_{n-1} & x_{n-1}^2 & x_{n-1}y_{n-1} & y_{n-1}^2 & \ldots & x_{n-1}^d y_{n-1}^{p-d}\\
+\begin{array}{lccccccc}
+  \verb|X=| & \left(\begin{array}{@{}cccccccc@{}}
+   1& x_0 & y_0 & x_0^2 & x_0y_0 & y_0^2 & \ldots & x_0^d y_0^{p-d}\\
+    1& x_1 & y_1 & x_1^2 & x_1y_1 & y_1^2 & \ldots & x_1^d y_1^{p-d}\\
+    & &  &  &  &  & \vdots & \\
+    1 & x_{n-1} & y_{n-1} & x_{n-1}^2 & x_{n-1}y_{n-1} & y_{n-1}^2 & \ldots & x_{n-1}^d y_{n-1}^{p-d}\\
  \end{array}\right) \\[15pt]
 \end{array}
 \]
@@ -50,12 +55,12 @@ By having different weights $\Beta$ in front of each term in the design matrix, 
 Where $\epsilon$ is the error. This can be written as
 
 \[
-\begin{array}{lccccccc}
-  \verb|\tilde{y}=| & \left(\begin{array}{@{}cccccccc@{}}
-    \epsilon_0 & \beta_0 x_0 &  \beta_1 y_0 &  \beta_2 x_0^2 &  \beta_3 x_0y_0 &  \beta_4 y_0^2 & \ldots &  \beta_5 x_0^d y_0^{p-d}\\
-    \epsilon_1 & \beta_0 x_1 &  \beta_1 y_1 &  \beta_2 x_1^2 &  \beta_3 x_1y_1 &  \beta_4 y_1^2 & \ldots &  \beta_5 x_1^d y_1^{p-d}\\
-     &  &  &  &  & \vdots & \\
-    \epsilon_{n-1} & \beta_0 x_{n-1} & \beta_1 y_{n-1} & \beta_2 x_{n-1}^2 & \beta_3 x_{n-1}y_{n-1} & \beta_4 y_{n-1}^2 & \ldots & \beta_5 x_{n-1}^d y_{n-1}^{p-d}\\
+\begin{array}{lcccccccc}
+  \verb|\tilde{y}=| & \left(\begin{array}{@{}ccccccccc@{}}
+    \epsilon_0 & 1 & \beta_0 x_0 &  \beta_1 y_0 &  \beta_2 x_0^2 &  \beta_3 x_0y_0 &  \beta_4 y_0^2 & \ldots &  \beta_5 x_0^d y_0^{p-d}\\
+    \epsilon_1 & 1 & \beta_0 x_1 &  \beta_1 y_1 &  \beta_2 x_1^2 &  \beta_3 x_1y_1 &  \beta_4 y_1^2 & \ldots &  \beta_5 x_1^d y_1^{p-d}\\
+     & &  &  &  &  & \vdots & \\
+    \epsilon_{n-1} & 1 & \beta_0 x_{n-1} & \beta_1 y_{n-1} & \beta_2 x_{n-1}^2 & \beta_3 x_{n-1}y_{n-1} & \beta_4 y_{n-1}^2 & \ldots & \beta_5 x_{n-1}^d y_{n-1}^{p-d}\\
  \end{array}\right) \\[15pt]
 \end{array}
 \]
