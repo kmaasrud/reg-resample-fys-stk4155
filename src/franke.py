@@ -6,12 +6,14 @@ from matplotlib import cm
 import os
 import pandas as pd
 
+random.seed(2020)
+
 N = 100
-sigma = 0.25
+sigma = 1
 
 # Make data 
 x = random.rand(N)
-y = random.randn(N)
+y = random.rand(N)
 noise = random.normal(0, sigma, size=N)
 
 def franke(x, y):
