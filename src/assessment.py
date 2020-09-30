@@ -1,4 +1,5 @@
 import numpy as np
+from numba import jit
 from sklearn.utils import resample
 from utils import mean_square, mean_value, MSE, split_and_scale
 from regression_methods import OLS
@@ -45,10 +46,11 @@ def kfolds(X, y, k):
     return folds
 
 
+@jit(nopython=True)
 def CV(X, y, k, method, lmb=0):
     folds = kfolds(X, y, k)
     
-    # Using MSE as the error function, don't know if this is correct.
+    # Using MSE as the assessment function
     err = mean_square()
     for i, fold in enumerate(folds):
         # Concatenate all folds other than the current one and set them as training data
@@ -62,6 +64,7 @@ def CV(X, y, k, method, lmb=0):
             reg = method(train_X, train_y, lmb)
 
         test_X = fold[0]; test_y = fold[1]
+
         # Add the predicted and test values to the mean_square class
         for predict, test in zip(reg.predict(test_X), test_y):
             err.add_vals(predict, test)
@@ -69,9 +72,10 @@ def CV(X, y, k, method, lmb=0):
     return err.result()
 
 
-def bootstrap(X, y_data, N_bootstraps, method, lmb=0):
-    X_train, X_test, y_train, y_test = split_and_scale(X, y_data)
-    MSEs = []
+def bootstrap(X, y, N_bootstraps, method, lmb=0):
+    X_train, X_test, y_train, y_test = split_and_scale(X, y)
+    vals = []
+    bootstrap_predicts = []
     for i in range(N_bootstraps):
         X_, y_ = resample(X_train, y_train)
 
@@ -80,7 +84,6 @@ def bootstrap(X, y_data, N_bootstraps, method, lmb=0):
         else:
             model = method(X_, y_, lmb)
 
-        y_predict_bootstrap = X_test @ model.beta
-        MSEs.append(MSE(y_predict_bootstrap, y_test))
+        bootstrap_predicts.append(model.predict(X_test))
 
-    return mean_value(MSEs)
+    return bootstrap_predicts, y_test
