@@ -86,4 +86,4 @@ def bootstrap(X, y, N_bootstraps, method, lmb=0):
 
         bootstrap_predicts.append(model.predict(X_test))
 
-    return bootstrap_predicts, y_test
+    return np.array(bootstrap_predicts), y_test
