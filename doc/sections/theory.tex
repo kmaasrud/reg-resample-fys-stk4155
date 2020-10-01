@@ -24,7 +24,7 @@ and we define it for the interval $x,y\in[0,1]$. An illustration of Franke's fun
 
 \begin{figure}
   \centering
-  \includegraphics[width = 3in]{frankesfunction_plot.png}
+  \includegraphics[width = 3in]{../assets/frankesfunction_plot.png}
   \caption{Shape of Franke's function which will be used as a interpolating goal.
   \newline
   Note to self: Might be better to plot the graph instead of using a figure from the web. Remember to add the source for the figure by using for example bib. \url{https://www.sfu.ca/~ssurjano/franke2d.html}}
@@ -33,7 +33,9 @@ and we define it for the interval $x,y\in[0,1]$. An illustration of Franke's fun
 
 \subsubsection{The Vandermonde matrix applied to Franke's function}
 
-When performing the different regression methods, it is important to sort the data into a well designed system for easy access and easier calculations. The data which is to be used during the calculations is sorted into a so called Vandermonde matrix, which is also known as a design matrix. A Vandermonde matrix is a matrix where the rows is built up by geometric progression \cite{vandermonde}.
+
+When performing the different regression methods, it is important to sort the data into a well designed system for easy access and easier calculations. The data which is to be used during the calculations is sorted into a so called Vandermonde matrix, which is also known as a design matrix. A Vandermonde matrix is a matrix where the rows is built up by geometric progression \\%\cite{vandermonde}.
+
 
 Franke's function is a two dimensional function defined by the components x and y. Then it is instinctive to have a design matrix X also built up by x and y components into a $n\times p$ matrix, the following way
 
@@ -136,6 +138,23 @@ which - by the same proceedure as shown in \hyperref[sec:L0_matrix_form]{appenix
 \begin{equation}
   \hat \beta^{\text{ridge}} = (\mathbf X^T\mathbf X + \lambda \mathbf I)^{-1}\mathbf X^T\mathbf y.
 \end{equation}
+
+% -----------------------------------
+\subsection{Assessment}
+\subsubsection{$K$-fold cross-validation}
+When faced with the issue of a small dataset, a good solution to circumvent issues is to utilize whats called $K$-fold cross-validation. It involves splitting the dataset in to $K$ equally sized "folds", and using each fold sequentially as the validation set, whilst training on the others. Say, for example, that we set $K=6$. In this example we would first train our model on the last $5$ datasets and evaluate the skill of our model by trying to predict the first. The evaluation is done by calculating the $R^2$ score, MSE or similar. Thereafter, we use the second fold as the testing set, train on the others, and so forth. The final cross-validation value is the mean of all the calculated statistics.
+
+This is especially a great tool when trying to find the best parameter $\alpha$ present in a model to minimize a certain error/statistic. Cross-validation will then serve as a function we want to minimize to achieve the best result, namely
+
+\begin{equation}
+  \text{CV}(\hat f, \alpha) = \frac{1}{N}\sum_{i=1}^N L\left(y_i, \hat f^{-\kappa(i)}(x_i, \alpha)\right)
+\end{equation}
+
+where $L$ is the error function we want to optimize, $y_i$ are the true values, $\hat f^{-k}$ is the fitted function excluding the fold $k$ and $\kappa(i)$ is the function taking in the index of the original dataset and returning the fold containing it. 
+
+% -----------------------------------
+\subsubsection{The Bootstrap}
+
 
 \subsection{Bias-variance decomposition}
 Consider a dataset \ensuremath{\mathcal{L}} consisting of the data \ensuremath{\mathbf{X}_\mathcal{L}=\{(y_j, \boldsymbol{x}_j)} for \ensuremath{j=0\ldots n-1\}}. We assume that the true data is generated from the noisy model

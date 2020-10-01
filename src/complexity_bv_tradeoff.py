@@ -31,7 +31,7 @@ for i, deg in enumerate(degs):
     MSEs_test.append(MSE(y_predict, y_test))
 
     bootstrap_predicts, _ = bootstrap(X, Y, 100, OLS)
-    biases.append(mean_value((y_test - np.mean(bootstrap_predicts, axis=0))**2))
+    biases.append(mean_value((y_test - np.mean(bootstrap_predicts))**2))
     variances.append(mean_value(np.var(bootstrap_predicts, axis=1)))
 
 plt.plot(degs, MSEs_train, label="Model fit to train data")
