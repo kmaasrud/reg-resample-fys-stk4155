@@ -1,10 +1,13 @@
+\iffalse
 \begin{figure}[htbp] %  figure placement: here, top, bottom, or page
    \centering
    \includegraphics[width=2in]{example.jpg} 
    \caption{example caption}
    \label{fig:example}
-\end{figure}\documentclass[../main.tex]{subfiles}
+\end{figure}
+\fi
 
+\documentclass[../main.tex]{subfiles}
 \begin{document}
 
 \section{Theory}\label{sec:theory}
@@ -23,15 +26,16 @@ and we define it for the interval $x,y\in[0,1]$. An illustration of Franke's fun
   \centering
   \includegraphics[width = 3in]{frankesfunction_plot.png}
   \caption{Shape of Franke's function which will be used as a interpolating goal.
-  \\Note to self: Might be better to plot the graph instead of using a figure from the web. Remember to add the source for the figure by using for example bib. https://www.sfu.ca/~ssurjano/franke2d.html}
+  \newline
+  Note to self: Might be better to plot the graph instead of using a figure from the web. Remember to add the source for the figure by using for example bib. \url{https://www.sfu.ca/~ssurjano/franke2d.html}}
   \label{fig:frankesplot}
 \end{figure}
 
 \subsubsection{The Vandermonde matrix applied to Franke's function}
 
-When performing the different regression methods, it is important to sort the data into a well designed system for easy access and easier calculations. The data which is to be used during the calculations is sorted into a so called Vandermonde matrix, which is also known as a design matrix. A Vandermonde matrix is a matrix where the rows is built up by geometric progression \cite{vandermonde}.\\
+When performing the different regression methods, it is important to sort the data into a well designed system for easy access and easier calculations. The data which is to be used during the calculations is sorted into a so called Vandermonde matrix, which is also known as a design matrix. A Vandermonde matrix is a matrix where the rows is built up by geometric progression \cite{vandermonde}.
 
-Franke's function is a two dimensional function defined by the components x and y. Then it is instinctive to have a design matrix X also built up by x and y components into a $n\cross p$ matrix, the following way
+Franke's function is a two dimensional function defined by the components x and y. Then it is instinctive to have a design matrix X also built up by x and y components into a $n\times p$ matrix, the following way
 
 \[
 \begin{array}{lccccccc}
@@ -44,7 +48,7 @@ Franke's function is a two dimensional function defined by the components x and 
 \end{array}
 \]
 
-Where the d is the degree of polynomial. Making the degree higher leads to more complicated equations which naturally gives a more precise regression. Having a design matrix built up by too many terms per polynomial increases the possibility of eventually getting an over fitting model, which will be discussed later in the article.\\
+Where the d is the degree of polynomial. Making the degree higher leads to more complicated equations which naturally gives a more precise regression. Having a design matrix built up by too many terms per polynomial increases the possibility of eventually getting an over fitting model, which will be discussed later in the article.
 
 By having different weights $\Beta$ in front of each term in the design matrix, it is possible to calculate how large each term in the polynomials should be in order to make the best approximation. This is the clue of having a design matrix built up by x and y components, making it possible to approximate the polynomials which will fit the Franke's function best. Then the approximation can be written as the following
 
@@ -89,7 +93,7 @@ where $\mathbf X$ is the design matrix constructed from the input data, and $\ha
 where $C(\beta)$ is the cost function.
 
 
-\subsubsection{Ordinary least squares regression ($L_0$)}
+\subsubsection{Ordinary least squares regression ($L_0$)}\label{sec:ols}
 Ordinary least squares (OLS) regression uses the residual sum of squares (RSS) function as the cost function. Given $N$ datapoints and the predicted output $\mathbf y$, it reads
 
 \begin{equation}
@@ -115,7 +119,7 @@ Lasso regression expands upon the above cost function by adding a term that pena
   \hat{\mathbf \beta} = \underset{\beta}{\arg \min} \begin{Bmatrix}\sum_{i=1}^N\left(y_i - \beta_0 - \sum_{j=1}^p x_{ij}\beta_j\right)^2 + \lambda \sum_{j=1}^p |\beta_j| \end{Bmatrix} .
 \end{equation}
 
-The first sum is from the RSS function, while the second sum is the imposed penalty. The Lasso decreases bias from the OLS model, by decreasing the size of the coefficients, and thus making the variables more equally weighted. \\
+The first sum is from the RSS function, while the second sum is the imposed penalty. The Lasso decreases bias from the OLS model, by decreasing the size of the coefficients, and thus making the variables more equally weighted. 
 
 Lasso regression has no closed form expression for $\hat{\mathbf \beta}$, which means it must be calculated programatically.
 
@@ -134,13 +138,55 @@ which - by the same proceedure as shown in \hyperref[sec:L0_matrix_form]{appenix
 \end{equation}
 
 \subsection{Bias-variance decomposition}
-
-\begin{align*}
-    \textbf{y}=f(\textbf{x})+\boldsymbol{\epsilon}
-\end{align*}
+Consider a dataset \ensuremath{\mathcal{L}} consisting of the data \ensuremath{\mathbf{X}_\mathcal{L}=\{(y_j, \boldsymbol{x}_j)} for \ensuremath{j=0\ldots n-1\}}. We assume that the true data is generated from the noisy model
 
 \begin{align}
-    C(\boldsymbol{X}, \boldsymbol{\beta}) = \frac{1}{n}\sum_{}^{}
+    \mathbf{y}=f(\mathbf{x})+\boldsymbol{\epsilon}, 
+    \label{eq:y}
+\end{align} where \ensuremath{\boldsymbol{\epsilon}} is the normal distributed noise with zero mean and a standard deviation \ensuremath{\sigma^2}. For the sake of simplicity we consider OLS. In \cref{sec:ols} defined a approximation to the function \ensuremath{f(\mathbf{x})} in terms of the parameters \ensuremath{\boldsymbol{\beta}} and the design matrix \ensuremath{\mathbf{X}} which embody our model, that is \ensuremath{\mathbf{\tilde{y}}=\mathbf{X}\boldsymbol{\beta}}. The parameters \ensuremath{\boldsymbol{\beta}} can then be found by optimizing the mean squared error via the so-called cost function
+
+\begin{align}
+    C(\mathbf{X}, \boldsymbol{\beta}) = \frac{1}{n}\sum_{i=0}^{n-1}(y_i-\tilde{y}_i)^2=\mathbb{E}\left[(\mathbf{y}-\mathbf{\tilde{y}})^2\right].
+    \label{eq:cost-function}
+\end{align} We want to decompose \cref{eq:cost-function} so that it can be expressed as the sum of bias, variance and the standard deviation. The first step is to substitute \cref{eq:y} into \cref{eq:cost-function}, and add and subtract the expectation value of the estimator variable \ensuremath{\mathbb{E}[\mathbf{\tilde{y}}]}. We get 
+
+\begin{align}
+    \mathbb{E}\left[(\mathbf{f}+\mathbf{\epsilon}-\mathbf{\tilde{y}}+\mathbb{E}[\mathbf{\tilde{y}}]-\mathbb{E}[\mathbf{\tilde{y}}])^2\right] = \sum_{i}\mathbb{E}\left[((\mathbf{f}-\mathbb{E}[\mathbf{\tilde{y}}])+\mathbf{\epsilon}+(\mathbb{E}[\mathbf{\tilde{y}}]-\mathbf{\tilde{y}}))^2\right]. 
+\end{align} By writing out this expression and using that \ensuremath{\mathbb{E}[\mathbf{\epsilon}]=0} and \ensuremath{\mathbb{E}[\mathbf{f}]=f} we get
+
+\begin{align*}
+    \mathbb{E}\left[(\mathbf{f}+\mathbf{\epsilon}-\mathbf{\tilde{y}}+\mathbb{E}[\mathbf{\tilde{y}}]-\mathbb{E}[\mathbf{\tilde{y}}])^2\right] &= 
+    \mathbb{E}[(\mathbf{f}-\mathbb{E}[\mathbf{\tilde{y}}])]+\mathbb{E}[\mathbf{\epsilon^2}]+\mathbb{E}[\mathbb{E}[\mathbf{\tilde{y}}]-\mathbf{\tilde{y}}]\\&+\underbrace{2\mathbb{E}[\boldsymbol{\epsilon}(\mathbb{E}[\mathbf{\tilde{y}}]-\mathbf{\tilde{y}})]}_{\text{=0}}+\underbrace{2\mathbb{E}[\boldsymbol{\epsilon}(\mathbf{f}-\mathbb{E}[\mathbf{\tilde{y}}])]}_{\text{=0}}\\&+\underbrace{\mathbb{E}[(\mathbf{f}-\mathbb{E}[\mathbf{\tilde{y}}])(\mathbb{E}[\mathbf{\tilde{y}}-\mathbf{\tilde{y}})]}_{\text{=0}}
+\end{align*} Thus, we are left with 
+
+\begin{align*}
+    (\mathbf{f}-\mathbb{E}[\mathbf{\tilde{y}}])^2+\mathbb{E}[\boldsymbol{\epsilon^2}]+\mathbb{E}[(\mathbb{E}[\mathbf{\tilde{y}}]-\mathbf{\tilde{y}})^2].
+\end{align*}
+
+The variance of the response variable is given by
+\begin{align*}
+    \mathrm{Var}(\mathbf{f}+\boldsymbol{\epsilon})&=\mathbb{E}[(\mathbf{f}+\boldsymbol{\epsilon})^2]-\mathbb{E}[\mathbf{f}+\boldsymbol{\epsilon}]\\&=\mathbb{E}[\mathbf{y}]^2+\underbrace{2\mathbb{E}[\mathbf{f}]\mathbb{E}[\boldsymbol{\epsilon}]}_{=0}+\mathbb{E}[\boldsymbol{\epsilon}^2]+(\underbrace{\mathbb{E}[\boldsymbol{\epsilon}]}_{=0}+\mathbb{E}[\mathbf{f}])^2
+\end{align*} We see that 
+
+\begin{align*}
+    \mathrm{Var}(\mathbf{f}+\boldsymbol{\epsilon})=\mathbb{E}[\boldsymbol{\epsilon}^2]=\sigma^2.
+\end{align*} The bias is defined as \ensuremath{(\mathbf{f}-\mathbb{E}[\mathbf{\tilde{y}}])^2=\mathrm{Bias}(\mathbf{\tilde{y}})}. \ensuremath{\mathbb{E}[(\mathbb{E}[\mathbf{\tilde{y}}]-\mathbf{\tilde{y}})^2]} can be rewritten as
+
+\begin{align*}
+    \mathbb{E}[(\mathbb{E}[\mathbf{\tilde{y}}]-\mathbf{\tilde{y}})^2] &=\mathbb{E}[\mathbb{E}[\mathbf{\tilde{y}}]]-2\mathbb{E}[\mathbf{\tilde{y}}]\mathbb{E}[\mathbb{E}[\mathbf{\tilde{y}}]+\mathbb{E}[\mathbf{\tilde{y}}]^2]\\
+    &=\mathbb{E}[\mathbf{\tilde{y}}^2]-\mathbb{E}[\mathbf{\tilde{y}}]^2\\
+    &=\mathrm{Var}(\mathbf{\tilde{y}})
+\end{align*} By discretizing this equation the expression above can be written as
+
+\begin{align*}
+    \mathbb{E}[(\mathbb{E}[\mathbf{\tilde{y}}]-\mathbf{\tilde{y}})^2]=\mathrm{Var}(\mathbf{\tilde{y}})=\frac{1}{n}\sum_{i=0}^{n-1}(\tilde{y}_i-\mathbb{E}[\mathbf{\tilde{y}})^2]
+\end{align*}
+
+Finally, we obtain the result
+\begin{align}
+    \mathbb{E}\left[(\mathbf{y}-\mathbf{\tilde{y}})^2\right]&=\frac{1}{n}\sum_i(f_i-\mathbb{E}\left[\mathbf{\tilde{y}}\right])^2+\frac{1}{n}\sum_i(\tilde{y}_i-\mathbb{E}\left[\mathbf{\tilde{y}}\right])^2+\sigma^2.\\
+    &=\mathrm{Bias}[\mathbf{\tilde{y}}]^2+\sigma^2+\mathrm{Var}[\mathbf{\tilde{y}}]
 \end{align}
+
 
 \end{document}
