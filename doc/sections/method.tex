@@ -12,13 +12,13 @@ It is natural to start wondering how the x and y data that is sent into the desi
 
 \subsection{Regression methods}
 \subsubsection{Ridge}
-To explain the implementation of the regression methods, it makes more sense to explain the ridge class first. The implemented ridge class starts of by defining different variables like the design matrix X, the dimensions n and p, y, lambdas lmb and the betas.\\
+To explain the implementation of the regression methods, it makes more sense to explain the ridge class first. The implemented ridge class starts of by defining different variables like the design matrix X, the dimensions n and p, y, lambdas lmb and the betas.
 
 Then the ridge coefficient vector is calculated the way explained in the theory section (\ref{rid}), which is easier to understand by seeing the code
-\begin{minted}{python}
+\begin{python}
         # Matrix inversion to find beta
         return np.linalg.inv(self.X.T @ self.X + self.lmb*I) @ self.X.T @ self.y
-\end{minted}
+\end{python}
 Where the linalg package is being use to invert the matrix. After this the prediction is calculated by taking the dot product of the design matrix and the calculated betas.
 
 \subsubsection{Ordinary least squares}
