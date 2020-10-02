@@ -6,17 +6,19 @@
 \usepackage{subfiles}   % Include subfiles
 \usepackage{hyperref}   % Nice referencing with clickable links
 \usepackage{amsmath}    % Math
-\usepackage{biblatex}   % Citations
+\usepackage[bakend=bibtex,style=ieee]{biblatex}   % Citations
 \usepackage{csquotes}   % Honestly no idea what this does...
 \usepackage{minted}
 \usepackage{comment}
 \usepackage{amssymb}
 \usepackage[parfill]{parskip}
-\usepackage{cleveref}
+\usepackage{pythonhighlight}
+\usepackage{gensymb}
 
 \graphicspath{{img/}{../img/}}
+\bibliography{references.bib}
 
-\setlength{\parindent}{0pt}
+%\setlength{\parindent}{0pt}
 
 \title{Project 1}
 \author{Knut Magnus Aasrud \\ Philip Karim Niane \\ Ida Due-Sørensen}
@@ -40,9 +42,18 @@
 
 \subfile{sections/conclusion}
 
+\printbibliography
+\clearpage
+\appendix
+\iffalse
+Appendix should start on own page and have its own section numbering
+\fi
 \subfile{sections/appendix}
 
-% \printbibliography
+
+
+%\bibliographystyle{apalike}
+
 
 \end{document}
 
