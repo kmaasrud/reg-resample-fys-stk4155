@@ -2,13 +2,13 @@
 \begin{document}
 
 \section{Method and implementation}\label{sec:method}
-The implementation of the code is pretty straight forward, having the regression models in a separate class, for easy use and access. Everything that has something to do with franke's function, for example plotting of the function or accumulation of data from the function is collected in a python file "franke". The resampling techniques is also gathered in a separate python file containing functions used for bootstrap, k-folds and cross validation in the python file "assessment". The last python file worth mentioning is "utils" which is a collection of a variety of different functions that is handy during the entire project, including a mean squared error function, $R^2$ score function, a function which makes a design matrix, a single value decomposition function and a bit other convenient functions.
+The implementation of the code is pretty straight forward, having the regression models in a separate class, for easy use and access. Everything that has something to do with franke's function, for example plotting of the function or accumulation of data from the function is collected in a python file \verb|franke.py|. The resampling techniques is also gathered in a separate python file containing functions used for bootstrap, k-folds and cross validation in the python file \verb|assesment.py|. The last python file worth mentioning is \verb|utils.py| which is a collection of a variety of different functions that is handy during the entire project, including a mean squared error function, $R^2$ score function, a function which makes a design matrix, a single value decomposition function and a bit other convenient functions.
 
 \subsection{The design matrix}
-To create the design matrix, the x and y arrays are sent into a function together with the desired degree of polynomial. Then the function checks the lengths of the arrays and the degree wanted, and uses this to calculate the dimensions of the design matrix needed to have the matrix on the form like the Vandermonde matrix discussed in the theory section. Then a double for loop is used to fill an identity matrix of the desired dimensions with the prefered x and y combinations to represent the right polynomials.
+To create the design matrix, the x and y arrays are sent into a function together with the desired degree of polynomial. Then the function checks the lengths of the arrays and the degree wanted, and uses this to calculate the dimensions of the design matrix needed to have the matrix on the form like the Vandermonde matrix discussed in the theory section. Then a double for loop is used to fill an identity matrix of the desired dimensions with the preferred x and y combinations to represent the right polynomials.
 
 \subsubsection{Input- design matrix}
-It is natural to start wondering how the x and y data that is sent into the design matrix function is produced. This is quiet easy done by making arrays of the size N=20 of sizes between between 0 and 1, and applying frankes function to the data points.
+It is natural to start wondering how the x and y data that is sent into the design matrix function is produced. This is quiet easy done by making arrays of the size N=20 with values between between 0 and 1, and applying frankes function to the data points.
 
 \subsection{Regression methods}
 \subsubsection{Ridge}
@@ -19,19 +19,32 @@ Then the ridge coefficient vector is calculated the way explained in the theory 
         # Matrix inversion to find beta
         return np.linalg.inv(self.X.T @ self.X + self.lmb*I) @ self.X.T @ self.y
 \end{python}
-Where the linalg package is being use to invert the matrix. After this the prediction is calculated by taking the dot product of the design matrix and the calculated betas.
+Where the \verb|linalg| package is being used to invert the matrix. After this the prediction is calculated by taking the product of the design matrix and the calculated betas.
 
 \subsubsection{Ordinary least squares}
-The OLS method is computed by using the ridge class, which was the reason the ridge class was explained first. The difference between the implementations is that in OLS $\lambda=0$. Which makes it quiet straight forward to call the class and accessing the methods.
+The OLS method is computed by using the ridge class, which was the reason the ridge class was explained first. The difference between the implementations is that in OLS, $\lambda=0$. Which makes it quiet straight forward to call the class and accessing the methods.
 
 \subsubsection{Lasso}
-Using the Lasso regression method the implementation was done by using scikit-learn, which is a python library with various machine learning algorithms. The method was performed by the following code
-\begin{minted}{python}
+Using the Lasso regression method the implementation was done by using scikit-learn, which is a python library with various machine learning algorithms \cite{scikitlearn}. The method was performed by the following code
+\begin{python}
     def fit_beta(self):
         sklearn_lasso = linear_model.Lasso(alpha=self.lmb)
         sklearn_lasso.fit(self.X, self.y)
         return sklearn_lasso.coef_
-\end{minted}
-where the self.X is the design matrix and and self.y is the response.
+\end{python}
+where the \verb|self.X| is the design matrix and \verb|self.y| is the response.
+
+\subsection{Resampling}
+\subsubsection{Cross validation}
+The implementation of the cross validation is based on the two functions \verb|kfolds| which splits up the data into k number of folds, and \verb|CV| which is performing the cross validation itself.
+
+The design matrix is sent into the CV function as an argument along the output array, the amount of folds wanted and a lambda value if wanted. The arguments is then used to define the folds by sending them into the kfold function. Within the calculations of kfold the data is shuffled, and split into folds of equally lengths by using a loop. After this the excessive data that was not enough to make a fold, is appended the different folds already made by using a loop. The folds is the returned to the main CV function as a list of k tuples where each tuple is being a $(X, y)$ pair.
+
+Each fold is then taken further into the CV function where it chooses an element in the fold and sets the rest of the elements as training data. The current element is set test data. The chosen regression methods is then performed and the predicted and test values is added to the mean squared class to calculate the error.
+
+\subsubsection{Bootstrap}
+The bootstrap function is implemented by having the design matrix, the output array y, N$\_$bootstraps, the method and lambda if needed as arguments. The data is first splitted and scale by using a function \verb|split_and_scale| written in \verb|utils.py| which does exactly that. Splits and scales the data, where $\frac{4}{5}$ of the data is split into training data, and the rest is test data. The bootstrap is performed by using \verb|sklearn|s resampling technique which resamples arrays in a consistent way. Each loop uses the resample function which implements one step of the bootstrapping procedure \cite{scikitlearn}. The results from the \verb|skrlearn.utils.resample| command is then used in the preferred regression method, which is appended to the bootstrap prediction list. The bootstrap predicted values is returned as an array along the $y$ test values.
+
+
 
 \end{document}
