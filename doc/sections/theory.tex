@@ -8,6 +8,8 @@
 \fi
 
 \documentclass[../main.tex]{subfiles}
+
+\documentclass[../main.tex]{subfiles}
 \begin{document}
 
 \section{Theory}\label{sec:theory}
@@ -35,7 +37,6 @@ and we define it for the interval $x,y\in[0,1]$. An illustration of Franke's fun
 
 
 When performing the different regression methods, it is important to sort the data into a well designed system for easy access and easier calculations. The data which is to be used during the calculations is sorted into a so called Vandermonde matrix, which is also known as a design matrix. A Vandermonde matrix is a matrix where the rows is built up by geometric progression \\%\cite{vandermonde}.
-
 
 Franke's function is a two dimensional function defined by the components x and y. Then it is instinctive to have a design matrix X also built up by x and y components into a $n\times p$ matrix, the following way
 
@@ -200,6 +201,7 @@ The variance of the response variable is given by
 \begin{align*}
     \mathbb{E}[(\mathbb{E}[\mathbf{\tilde{y}}]-\mathbf{\tilde{y}})^2]=\mathrm{Var}(\mathbf{\tilde{y}})=\frac{1}{n}\sum_{i=0}^{n-1}(\tilde{y}_i-\mathbb{E}[\mathbf{\tilde{y}})^2]
 \end{align*}
+
 
 Finally, we obtain the result
 \begin{align}
