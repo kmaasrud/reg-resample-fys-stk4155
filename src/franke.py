@@ -52,18 +52,3 @@ def make_franke_data():
     df.to_csv ('./' + path + '/' + outfilename, index = False, header=True)
 
     df.to_csv (outfilename, index = False, header=True)
-
-def plot_franke(N):
-    """Quick function to look at the Franke function in 3D"""
-    x = y = linspace(0, 1, N)
-    X, Y = meshgrid(x, y)
-
-    Z = franke(X, Y)
-
-    fig = plt.figure()
-    ax = fig.gca(projection='3d')
-
-    surface = ax.plot_surface(
-        X, Y, Z, cmap=cm.coolwarm, linewidth=0, antialiased=False)
-
-    plt.show()
