@@ -6,8 +6,10 @@
    \label{fig:example}
 \end{figure}
 \fi
+
 \documentclass[../main.tex]{subfiles}
 
+\documentclass[../main.tex]{subfiles}
 \begin{document}
 
 \section{Theory}\label{sec:theory}
@@ -33,6 +35,7 @@ and we define it for the interval $x,y\in[0,1]$. An illustration of Franke's fun
 
 \subsubsection{The Vandermonde matrix applied to Franke's function}
 
+
 When performing the different regression methods, it is important to sort the data into a well designed system for easy access and easier calculations. The data which is to be used during the calculations is sorted into a so called Vandermonde matrix, which is also known as a design matrix. A Vandermonde matrix is a matrix where the rows is built up by geometric progression \\%\cite{vandermonde}.
 
 Franke's function is a two dimensional function defined by the components x and y. Then it is instinctive to have a design matrix X also built up by x and y components into a $n\times p$ matrix, the following way
@@ -48,7 +51,7 @@ Franke's function is a two dimensional function defined by the components x and 
 \end{array}
 \]
 
-Where the d is the degree of polynomial. Making the degree higher leads to more complicated equations which naturally gives a more precise regression. Having a design matrix built up by too many terms per polynomial increases the possibility of eventually getting an over fitting model, which will be discussed later in the article.\\
+Where the d is the degree of polynomial. Making the degree higher leads to more complicated equations which naturally gives a more precise regression. Having a design matrix built up by too many terms per polynomial increases the possibility of eventually getting an over fitting model, which will be discussed later in the article.
 
 By having different weights $\Beta$ in front of each term in the design matrix, it is possible to calculate how large each term in the polynomials should be in order to make the best approximation. This is the clue of having a design matrix built up by x and y components, making it possible to approximate the polynomials which will fit the Franke's function best. Then the approximation can be written as the following
 
@@ -93,7 +96,7 @@ where $\mathbf X$ is the design matrix constructed from the input data, and $\ha
 where $C(\beta)$ is the cost function.
 
 
-\subsubsection{Ordinary least squares regression ($L_0$)}
+\subsubsection{Ordinary least squares regression ($L_0$)}\label{sec:ols}
 Ordinary least squares (OLS) regression uses the residual sum of squares (RSS) function as the cost function. Given $N$ datapoints and the predicted output $\mathbf y$, it reads
 
 \begin{equation}
@@ -119,7 +122,7 @@ Lasso regression expands upon the above cost function by adding a term that pena
   \hat{\mathbf \beta} = \underset{\beta}{\arg \min} \begin{Bmatrix}\sum_{i=1}^N\left(y_i - \beta_0 - \sum_{j=1}^p x_{ij}\beta_j\right)^2 + \lambda \sum_{j=1}^p |\beta_j| \end{Bmatrix} .
 \end{equation}
 
-The first sum is from the RSS function, while the second sum is the imposed penalty. The Lasso decreases bias from the OLS model, by decreasing the size of the coefficients, and thus making the variables more equally weighted. \\
+The first sum is from the RSS function, while the second sum is the imposed penalty. The Lasso decreases bias from the OLS model, by decreasing the size of the coefficients, and thus making the variables more equally weighted. 
 
 Lasso regression has no closed form expression for $\hat{\mathbf \beta}$, which means it must be calculated programatically.
 
@@ -199,10 +202,12 @@ The variance of the response variable is given by
     \mathbb{E}[(\mathbb{E}[\mathbf{\tilde{y}}]-\mathbf{\tilde{y}})^2]=\mathrm{Var}(\mathbf{\tilde{y}})=\frac{1}{n}\sum_{i=0}^{n-1}(\tilde{y}_i-\mathbb{E}[\mathbf{\tilde{y}})^2]
 \end{align*}
 
+
 Finally, we obtain the result
 \begin{align}
     \mathbb{E}\left[(\mathbf{y}-\mathbf{\tilde{y}})^2\right]&=\frac{1}{n}\sum_i(f_i-\mathbb{E}\left[\mathbf{\tilde{y}}\right])^2+\frac{1}{n}\sum_i(\tilde{y}_i-\mathbb{E}\left[\mathbf{\tilde{y}}\right])^2+\sigma^2.\\
     &=\mathrm{Bias}[\mathbf{\tilde{y}}]^2+\sigma^2+\mathrm{Var}[\mathbf{\tilde{y}}]
 \end{align}
+
 
 \end{document}
