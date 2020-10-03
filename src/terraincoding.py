@@ -261,6 +261,6 @@ OLS_plot= Perform OLS on the choosen part of terrain, and show the plot
 CI=Find the confidence intervals and plot them"""
 
 """If you want to save the figures, use 'save' as argument"""
-#OLS_terrain('best_deg', 'OLS_plot', 'CI')
+OLS_terrain('best_deg', 'OLS_plot', 'CI')
 #ridge()
 #lasso()
