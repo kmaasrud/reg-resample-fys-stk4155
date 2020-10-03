@@ -5,8 +5,8 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
 
 # Scikit imports
-from sklearn.linear_model import LinearRegression
 from sklearn import linear_model
+from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score, mean_squared_error
 from sklearn.preprocessing import PolynomialFeatures
 
@@ -20,19 +20,19 @@ from secondary_utils_changed_functions import *
 terrain = imread("./data/SRTM_data_Norway_1.tif")
 # Plot the terrain
 print(type(terrain), len(terrain))
-#plt.figure()
+plt.figure()
 plt.title("Terrain over Norway")
 plt.imshow(terrain, cmap="bone")
 plt.xlabel("X")
 plt.ylabel("Y")
 #plt.savefig('Terrain_SRTM_data_norway_1')
-#plt.show()
+plt.show()
 
 #Chose a random part of the terrain
 part_of_terrain = terrain[1510:1530,1010:1030]
 
 # Plot part of the terrain
-#plt.figure()
+plt.figure()
 plt.title('Small part of terrain over Norway')
 plt.imshow(part_of_terrain, cmap='bone', extent=[1010,1030,1530,1510])
 #Other cool colors: copper, winter, gray, pink
@@ -40,7 +40,7 @@ plt.xticks(rotation=45)
 plt.xlabel('X')
 plt.ylabel('Y')
 #plt.savefig('part_of_terrain')
-#plt.show()
+plt.show()
 
 """Defining the data the same way as we did in franke's function"""
 y_arr, x_arr = part_of_terrain.shape
@@ -80,7 +80,8 @@ def OLS_terrain(*args):
         plt.legend()
         plt.xlabel('Degree of polynomial')
         plt.ylabel('Error')
-        #plt.savefig('terrain_ols_error_plot')
+        if 'save' in args :
+            plt.savefig('terrain_ols_error_plot')
         #plt.title('Training and test error vs. polynomial degree')
         plt.show()
 
@@ -118,7 +119,8 @@ def OLS_terrain(*args):
         plt.xlabel('X')
         plt.ylabel('Y')
         plt.xticks(rotation=45)
-        plt.savefig('Terrain_OLS_bestdegree')
+        if 'save' in args :
+            plt.savefig('Terrain_OLS_bestdegree')
         plt.show()
 
         print(f"OLS-Mean Squared Error: {MSE(z1,z_pred)}")
@@ -134,52 +136,27 @@ def OLS_terrain(*args):
         plt.plot(beta_x, beta_upper, 'k+')
         plt.plot(beta_x, beta_lower, 'k+')
         plt.xlabel('Betas')
+        if 'save' in args :
+            plt.savefig('Terrain_OLS_CI')
         plt.show()
-        plt.savefig('Terrain_OLS_CI')
 
     return
-
-def ridge():
+def ridge(*args):
     """Finding the best degree of polynomial and lambda"""
     #Defining max degree and max lambda to check
-    maxd = 30
-    n_lmb = 35
+    maxd = 30       #30
+    n_lmb = 35      #35
 
     #Defining ranges to loop over
     lambdas = np.logspace(-12,0, n_lmb)
     interval_degrees = np.arange(1, maxd+1)
 
-    #Space of zeroes to be filled with values during the loop
-    mse_values = np.zeros((maxd, n_lmb))
-
-    #Looping over the range of lambdas and degrees
-    i=0
-    for deg in interval_degrees:
-        j=0
-        for lmb in lambdas:
-            #print(lmb)
-            test_err, train_err, r2 = k_Cross_Validation(x1, y1, z1, d=deg, reg_method='Ridge', lmb=lmb)
-            mse_values[i,j] = test_err
-            j += 1
-        i += 1
-
-   #mse_min=mse_values.min()
-    #for i in range(interval_degrees):
-        #for j in range(maxd):
-            #if mse_values[i,j]==mse_min:
-                #print(f"Best MSE: {mse_min}")
-                #print(f"with lambda={j}, and degree={i}")"""
-
-    # Record best degree and lambda
-    min_MSE = mse_values.min()
-    min_index = np.where(mse_values == min_MSE)
-    deg_ind, lmb_ind = tuple(i.item() for i in min_index)
-    best_lmb = lambdas[lmb_ind]   # lambda which gives lowest MSE
-    best_deg = interval_degrees[deg_ind]   # degree which gives lowest MSE
+    mse_values, best_deg, best_lmb, min_MSE=best_d_l(maxd, n_lmb, interval_degrees, lambdas, x1, y1, z1, 'Ridge')
 
     print(f"Best MSE while finding best parameters: {min_MSE}")
     print(f"with lambda={best_lmb}, and degree={best_deg}")
 
+    best_lmb
     # Plot MSE with color map
     im = plt.imshow(mse_values, cmap=plt.cm.RdBu, extent = [-12, 0, 1, maxd],
                 interpolation=None, aspect='auto')
@@ -187,7 +164,8 @@ def ridge():
     plt.xlabel('log10(lambda)')
     plt.ylabel('degree of polynomial')
     #plt.title('MSE colormap (Ridge)')
-    plt.savefig('terrain-ridge-degree-lambda-colormap')
+    if 'save' in args :
+        plt.savefig('terrain-ridge-degree-lambda-colormap')
     plt.show()
 
     """Performing Ridge with the best degree and best lambda"""
@@ -195,7 +173,7 @@ def ridge():
     p = X.shape[1]
     I = np.eye(p)
 
-    A=(X.T @ X) + lmb*I
+    A=(X.T @ X) + best_lmb*I
     beta=SVDinv(A) @ X.T @ z1
     z_pred=X@beta
 
@@ -206,12 +184,12 @@ def ridge():
     plt.xticks(rotation=45)
     plt.ylabel('Y')
     plt.title('Ridge regression')
-    plt.savefig('Terrain_ridge_bestdegree')
+    if 'save' in args :
+        plt.savefig('Terrain_ridge_bestdegree')
     plt.show()
 
     print(f"Ridge-Mean Squared Error: {MSE(z1,z_pred)}")
     print(f"Ridge-R2-score: {R2(z1,z_pred)}")
-
 
     """Calculating and plotting the confidence intervals"""
     beta_x = np.arange(len(beta))
@@ -222,16 +200,67 @@ def ridge():
     plt.plot(beta_x, beta_upper, 'k+')
     plt.plot(beta_x, beta_lower, 'k+')
     plt.xlabel('Betas')
+    if 'save' in args :
+        plt.savefig('Terrain_ridge_CI')
     plt.show()
-    plt.savefig('Terrain_ridge_CI')
 
     return
+def lasso(*args):
+    """Finding the best degree of polynomial and lambda"""
+    #Defining max degree and max lambda to check
+    maxd = 50   #30 for ridge
+    n_lmb = 50  #35 for ridge
 
+    #Defining ranges to loop over
+    lambdas = np.logspace(-10,0, n_lmb)
+    interval_degrees = np.arange(1, maxd+1)
+
+    #Returns the best lambdas and degrees, along with some MSE values
+    mse_values, best_deg, best_lmb, min_MSE=best_d_l(maxd, n_lmb, interval_degrees, lambdas, x1, y1, z1, 'Lasso')
+    print(f"Max lambda used={n_lmb} and max degree used={maxd}")
+    print(f"Best MSE while finding best parameters: {min_MSE}")
+    print(f"with lambda={best_lmb}, and degree={best_deg}")
+
+    # Plot MSE with color map
+    im = plt.imshow(mse_values, cmap=plt.cm.RdBu, extent = [-10, 0, 1, maxd],
+                interpolation=None, aspect='auto')
+    plt.colorbar(im)
+    plt.xlabel('log10(lambda)')
+    plt.ylabel('degree of polynomial')
+    #plt.title('MSE colormap (Ridge)')
+    if 'save' in args :
+        plt.savefig('terrain-lasso-degree-lambda-colormap')
+    plt.show()
+
+    """Performing lasso with the best degree and best lambda"""
+    X = design_matrix(x1, y1, best_deg)
+
+    sklearn_lasso = linear_model.Lasso(alpha=best_lmb)
+    fit=sklearn_lasso.fit(X,z1)
+    z_pred=fit.predict(X)
+
+    #Plotting the ridge terrain result with the best degree
+    plt.figure()
+    plt.imshow(z_pred.reshape(y_arr, x_arr), cmap='bone', extent=[1010,1030,1530,1510])
+    plt.xlabel('X')
+    plt.xticks(rotation=45)
+    plt.ylabel('Y')
+    plt.title('Lasso regression')
+    if 'save' in args :
+        plt.savefig('Terrain_lasso_bestdegree')
+    plt.show()
+
+    print(f"Lasso-Mean Squared Error: {MSE(z1,z_pred)}")
+    print(f"Lasso-R2-score: {R2(z1,z_pred)}")
+
+    return
 
 """Tasks as arguments in OLS
 best_deg= Find best polynomial degree
 OLS_plot= Perform OLS on the choosen part of terrain, and show the plot
 CI=Find the confidence intervals and plot them"""
 
+"""If you want to save the figures, use 'save' as argument"""
 #OLS_terrain('best_deg', 'OLS_plot', 'CI')
 #ridge()
+#lasso()

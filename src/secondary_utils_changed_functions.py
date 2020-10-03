@@ -1,6 +1,32 @@
 #Just an extra file, with functions that work.
 import numpy as np
 from utils import design_matrix, R2
+from sklearn import linear_model
+
+#Finds the best lambdas and degrees
+def best_d_l(maxdegree, maxlmb, ndeg, nlmb, x, y, z, method_CV):
+    #Space of zeroes to be filled with values during the loop
+    mse = np.zeros((maxdegree, maxlmb))
+
+    #Looping over the range of lambdas and degrees
+    i=0
+    for deg in ndeg:
+        j=0
+        for lmb in nlmb:
+            test_error, train_error, r2_score = k_Cross_Validation(x, y, z, d=deg, reg_method=method_CV, lmb=lmb)
+            mse[i,j] = test_error
+            j += 1
+        i += 1
+
+    # Record best degree and lambda
+    MSE_minimum = mse.min()
+    min_index = np.where(mse == MSE_minimum)
+    deg_ind, lmb_ind = tuple(i.item() for i in min_index)
+    effective_lmb = nlmb[lmb_ind]   # lambda which gives lowest MSE
+    effective_deg = ndeg[deg_ind]   # degree which gives lowest MSE
+
+    return mse, effective_deg, effective_lmb, MSE_minimum
+
 
 def k_folds(n, k=5, seed = None):
     """
@@ -56,7 +82,7 @@ def k_Cross_Validation(x, y, z, k=5, d=3, reg_method = 'Linear', lmb = None, see
     test_folds = k_folds(n, k=k, seed=seed)
 
     if reg_method == 'Lasso':
-        model = Lasso(alpha=lmb, fit_intercept = False, tol=0.001, max_iter=10e6)
+        model = linear_model.Lasso(alpha=lmb, fit_intercept = False, tol=0.001, max_iter=10e6)
 
     for indexes in test_folds:
         m = len(indexes)
