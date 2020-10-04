@@ -151,7 +151,6 @@ contains the mean value(Seems like 95% is quiet common), y=array with
 data from franke's function. y_pred=the predicted values, n=observations
 """
 
-# Function is malfunctioning, so I'm just commenting it out now for testing
 def CI (X_matrix,beta,CIpercent,y,y_pred,n):
     #The different Zscores representing the CI percentages can be found online
     if CIpercent == 90:
@@ -164,7 +163,7 @@ def CI (X_matrix,beta,CIpercent,y,y_pred,n):
     p = len(beta)
 
     sd = np.sqrt((1/(n-p-1))*np.sum((y-y_pred)**2))  #Standard deviation
-    cov_matrix = sd**2*np.linalg.inv(X_matrix.T.dot(X_matrix))
+    cov_matrix = sd**2*np.linalg.pinv(X_matrix.T.dot(X_matrix))
     variance = np.diag(cov_matrix)                 #Variance of betas along diagonal
 
     CI_min = []

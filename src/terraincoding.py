@@ -156,7 +156,6 @@ def ridge(*args):
     print(f"Best MSE while finding best parameters: {min_MSE}")
     print(f"with lambda={best_lmb}, and degree={best_deg}")
 
-    best_lmb
     # Plot MSE with color map
     im = plt.imshow(mse_values, cmap=plt.cm.RdBu, extent = [-12, 0, 1, maxd],
                 interpolation=None, aspect='auto')
@@ -261,6 +260,6 @@ OLS_plot= Perform OLS on the choosen part of terrain, and show the plot
 CI=Find the confidence intervals and plot them"""
 
 """If you want to save the figures, use 'save' as argument"""
-OLS_terrain('best_deg', 'OLS_plot', 'CI')
-#ridge()
+#OLS_terrain('best_deg', 'OLS_plot', 'CI')
+ridge()
 #lasso()
