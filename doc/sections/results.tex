@@ -15,6 +15,23 @@ With a dataset of values produced from Franke's function, we've fitted a model b
     \label{fig:result_complexity}
 \end{figure}
 
+% Preliminary explanation of bias-variance plot. I don't think the plot looks very nice right now...
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{../assets/var.png}
+    \label{fig:result_bias_variance}
+\end{figure}
+
+The above results uses bootstrapping as an assessment technique. We have also implemented $K$-fold cross-validation, and figure \ref{fig:result_cv_boot_mse} shows how their calculated MSE compares
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{../assets/cv_boot_mse.png}
+    \caption{Mean squared error calculated with $K=20$-fold cross-validation and bootstrapping with $B=100$.}
+    \label{fig:result_cv_boot_mse}
+\end{figure}
+
 \subsubsection{Ridge regression}
 \subsubsection{Lasso regression}
 
