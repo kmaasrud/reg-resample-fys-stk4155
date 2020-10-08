@@ -8,8 +8,6 @@
 \fi
 
 \documentclass[../main.tex]{subfiles}
-
-\documentclass[../main.tex]{subfiles}
 \begin{document}
 
 \section{Theory}\label{sec:theory}
@@ -17,10 +15,13 @@
 \subsection{Franke's function}
 Franke's function is a function which is often used to test different regression and interpolation methods. The function has two Gaussian peaks of differing heights, and a smaller dip. It's expression is
 
-\begin{align*}
+\begin{align}
+\begin{split}
   f(x,y) &= \frac{3}{4}\exp{\left(-\frac{(9x-2)^2}{4} - \frac{(9y-2)^2}{4}\right)}+\frac{3}{4}\exp{\left(-\frac{(9x+1)^2}{49}- \frac{(9y+1)}{10}\right)} \\
   &+\frac{1}{2}\exp{\left(-\frac{(9x-7)^2}{4} - \frac{(9y-3)^2}{4}\right)} -\frac{1}{5}\exp{\left(-(9x-4)^2 - (9y-7)^2\right) }.
-\end{align*}
+\end{split}
+  \label{eq:franke-func}
+\end{align}
 
 and we define it for the interval $x,y\in[0,1]$. An illustration of Franke's function can be seen in figure \ref{fig:frankesplot}
 
@@ -38,10 +39,10 @@ and we define it for the interval $x,y\in[0,1]$. An illustration of Franke's fun
 
 When performing the different regression methods, it is important to sort the data into a well designed system for easy access and easier calculations. The data which is to be used during the calculations is sorted into a so called Vandermonde matrix, which is also known as a design matrix. A Vandermonde matrix is a matrix where the rows is built up by geometric progression \\%\cite{vandermonde}.
 
-Franke's function is a two dimensional function defined by the components x and y. Then it is instinctive to have a design matrix X also built up by x and y components into a $n\times p$ matrix, the following way
+Franke's function is a two dimensional function defined by the components $x$ and $y$. Then it is instinctive to have a design matrix $X$ also built up by $x$ and $y$ components into a $n\times p$ matrix, the following way
 
 \begin{equation*}
-X= & \begin{pmatrix}
+X=  \begin{pmatrix}
    1& x_0 & y_0 & x_0^2 & x_0y_0 & y_0^2 & \ldots & x_0^d y_0^{p-d}\\
     1& x_1 & y_1 & x_1^2 & x_1y_1 & y_1^2 & \ldots & x_1^d y_1^{p-d}\\
     & &  &  &  &  & \vdots & \\
@@ -49,9 +50,9 @@ X= & \begin{pmatrix}
  \end{pmatrix}
 \end{equation*}
 
-Where the d is the degree of polynomial. Making the degree higher leads to more complicated equations which naturally gives a more precise regression. Having a design matrix built up by too many terms per polynomial increases the possibility of eventually getting an over fitting model, which will be discussed later in the article.
+Where the $d$ is the degree of polynomial. Making the degree higher leads to more complicated equations which naturally gives a more precise regression. Having a design matrix built up by too many terms per polynomial increases the possibility of eventually getting an over fitting model, which will be discussed later in the article.
 
-By having different weights $\beta$ in front of each term in the design matrix, it is possible to calculate how large each term in the polynomials should be in order to make the best approximation. This is the clue of having a design matrix built up by x and y components, making it possible to approximate the polynomials which will fit the Franke's function best. Then the approximation can be written as the following
+By having different weights $\beta$ in front of each term in the design matrix, it is possible to calculate how large each term in the polynomials should be in order to make the best approximation. This is the clue of having a design matrix built up by $x$ and $y$ components, making it possible to approximate the polynomials which will fit the Franke's function best. Then the approximation can be written as the following
 
 \begin{equation}
     \tilde{y}=X\beta+\epsilon
@@ -59,15 +60,19 @@ By having different weights $\beta$ in front of each term in the design matrix, 
 
 Where $\epsilon$ is the error. This can be written as
 
+\begin{frame}
+\footnotesize
+\setlength{\arraycolsep}{2.5pt} % default: 5pt
+\medmuskip = 1mu % default: 4mu plus 2mu minus 4mu
 \begin{equation*}
-  \tilde{y}= & \begin{pmatrix}
+  \tilde{y}=  \begin{pmatrix}
     \epsilon_0 & 1 & \beta_0 x_0 &  \beta_1 y_0 &  \beta_2 x_0^2 &  \beta_3 x_0y_0 &  \beta_4 y_0^2 & \ldots &  \beta_5 x_0^d y_0^{p-d}\\
     \epsilon_1 & 1 & \beta_0 x_1 &  \beta_1 y_1 &  \beta_2 x_1^2 &  \beta_3 x_1y_1 &  \beta_4 y_1^2 & \ldots &  \beta_5 x_1^d y_1^{p-d}\\
      & &  &  &  &  & \vdots & \\
-    \epsilon_{n-1} & 1 & \beta_0 x_{n-1} & \beta_1 y_{n-1} & \beta_2 x_{n-1}^2 & \beta_3 x_{n-1}y_{n-1} & \beta_4 y_{n-1}^2 & \ldots & \beta_5 x_{n-1}^d y_{n-1}^{p-d}\\
- \end{pmatrix}
+    \epsilon_{n-1} & 1 & \beta_0 x_{n-1} & \beta_1 y_{n-1} & \beta_2 x_{n-1}^2 & \beta_3 x_{n-1}y_{n-1} & \beta_4 y_{n-1}^2 & \ldots & \beta_5 x_{n-1}^d y_{n-1}^{p-d}
+ \end{pmatrix}.
 \end{equation*}
-
+\end{frame}
 
 
 \begin{comment}
