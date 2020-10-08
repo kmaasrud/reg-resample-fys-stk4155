@@ -44,7 +44,7 @@ def design_matrix(x, y, d):
     """Function for setting up a design X-matrix with rows [1, x, y, x², y², xy, ...]
     Input: x and y mesh, keyword argument d is the degree.
     """
-    
+
     if len(x.shape) > 1:
     # reshape input to 1D arrays (easier to work with)
         x = np.ravel(x)
@@ -108,12 +108,12 @@ def split_and_scale(X, y, test_size=0.2):
     4/5 of the data is training data.
     """
     X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=test_size)
-    
+
     scaler = preprocessing.StandardScaler()
     scaler.fit(X_train)
     X_train_scaled = scaler.transform(X_train)
     X_test_scaled = scaler.transform(X_test)
-    
+
     return X_train, X_test, y_train, y_test
 
 
@@ -149,9 +149,8 @@ https://www.investopedia.com/ask/answers/042415/what-difference-between-standard
 X=Design matrix, beta=beta_array, CIpercent=How many percent of data that
 contains the mean value(Seems like 95% is quiet common), y=array with
 data from franke's function. y_pred=the predicted values, n=observations
+"""
 
-
-# Function is malfunctioning, so I'm just commenting it out now for testing
 def CI (X_matrix,beta,CIpercent,y,y_pred,n):
     #The different Zscores representing the CI percentages can be found online
     if CIpercent == 90:
@@ -164,7 +163,7 @@ def CI (X_matrix,beta,CIpercent,y,y_pred,n):
     p = len(beta)
 
     sd = np.sqrt((1/(n-p-1))*np.sum((y-y_pred)**2))  #Standard deviation
-    cov_matrix = sd**2*np.linalg.inv(X_matrix.T.dot(X_matrix))
+    cov_matrix = sd**2*np.linalg.pinv(X_matrix.T.dot(X_matrix))
     variance = np.diag(cov_matrix)                 #Variance of betas along diagonal
 
     CI_min = []
@@ -178,4 +177,3 @@ def CI (X_matrix,beta,CIpercent,y,y_pred,n):
         CI_max.append(CI_max_value)
 
     return CI_min, CI_max    #Returns two lists
-"""
