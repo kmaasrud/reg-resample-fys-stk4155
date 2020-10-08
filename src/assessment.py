@@ -1,5 +1,4 @@
 import numpy as np
-from numba import jit
 from sklearn.utils import resample
 from utils import mean_square, mean_value, MSE, split_and_scale
 from regression_methods import OLS
@@ -40,13 +39,12 @@ def kfolds(X, y, k):
     if excessive_n:
         K = folds_n * k
         for i in range(excessive_n):
-            folds[i][0].append(X[K+i])
-            folds[i][1].append(y[K+1])
+            np.append(folds[i][0], X[K+i])
+            np.append(folds[i][1], y[K+1])
 
     return folds
 
 
-@jit(nopython=True)
 def CV(X, y, k, method, lmb=0):
     folds = kfolds(X, y, k)
     
