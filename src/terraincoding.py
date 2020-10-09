@@ -4,6 +4,13 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
 
+fontsize = 15
+newparams = {'axes.titlesize': fontsize, 'axes.labelsize': fontsize,
+             'lines.linewidth': 2, 'lines.markersize': 7,
+             'ytick.labelsize': fontsize - 2,
+             'xtick.labelsize': fontsize - 2}
+plt.rcParams.update(newparams)
+
 # Scikit imports
 from sklearn import linear_model
 from sklearn.linear_model import LinearRegression
@@ -19,7 +26,7 @@ from secondary_utils_changed_functions import *
 """Showing and choosing the terrain"""
 terrain = imread("./data/SRTM_data_Norway_1.tif")
 # Plot the terrain
-print(type(terrain), len(terrain))
+#print(type(terrain), len(terrain))
 plt.figure()
 plt.title("Terrain over Norway")
 plt.imshow(terrain, cmap="bone")
@@ -28,6 +35,8 @@ plt.ylabel("Y")
 #plt.savefig('Terrain_SRTM_data_norway_1')
 plt.show()
 
+# Covert terrain data to np.array to use with our regression classes
+terrain = np.array(terrain)
 #Chose a random part of the terrain
 part_of_terrain = terrain[1510:1530,1010:1030]
 
@@ -81,7 +90,8 @@ def OLS_terrain(*args):
         plt.xlabel('Degree of polynomial')
         plt.ylabel('Error')
         if 'save' in args :
-            plt.savefig('terrain_ols_error_plot')
+            plt.tight_layout()
+            plt.savefig('terrain_ols_error_plot.png',bbox_inches='tight', dpi=300)
         #plt.title('Training and test error vs. polynomial degree')
         plt.show()
 
@@ -120,7 +130,8 @@ def OLS_terrain(*args):
         plt.xlabel('X')
         plt.ylabel('Y')
         if 'save' in args :
-            plt.savefig('Terrain_OLS_bestdegree')
+            plt.tight_layout()
+            plt.savefig('Terrain_OLS_bestdegree.png',bbox_inches='tight', dpi=300)
         plt.show()
 
         print(f"OLS-Mean Squared Error: {MSE(z1,z_pred)}")
@@ -141,7 +152,8 @@ def OLS_terrain(*args):
         plt.plot(beta_x, beta_lower, 'k+')
         plt.xlabel('Betas')
         if 'save' in args :
-            plt.savefig('Terrain_OLS_CI')
+            plt.tight_layout()
+            plt.savefig('Terrain_OLS_CI.png',bbox_inches='tight', dpi=300)
         plt.show()
 
     return
@@ -163,22 +175,28 @@ def ridge(*args):
     # Plot MSE with color map
     im = plt.imshow(mse_values, cmap=plt.cm.RdBu, extent = [-12, 0, 1, maxd],
                 interpolation=None, aspect='auto')
-    plt.colorbar(im)
-    plt.xlabel('log10(lambda)')
+    cbar = plt.colorbar(im)
+    cbar.set_label('MSE', rotation=90)
+    plt.xlabel('log$_{10}$(lambda)')
     plt.ylabel('degree of polynomial')
     #plt.title('MSE colormap (Ridge)')
     if 'save' in args :
-        plt.savefig('terrain-ridge-degree-lambda-colormap')
+        plt.tight_layout()
+        plt.savefig('terrain-ridge-degree-lambda-colormap.png',bbox_inches='tight', dpi=300)
     plt.show()
 
     """Performing Ridge with the best degree and best lambda"""
     X = design_matrix(x1, y1, best_deg)
-    p = X.shape[1]
-    I = np.eye(p)
+    # p = X.shape[1]
+    # I = np.eye(p)
 
-    A=(X.T @ X) + best_lmb*I
-    beta=SVDinv(A) @ X.T @ z1
-    z_pred=X@beta
+    # A=(X.T @ X) + best_lmb*I
+    # beta=SVDinv(A) @ X.T @ z1
+    # z_pred=X@beta
+    
+    Ridge_reg = Ridge(X,z1,best_lmb)
+    beta = Ridge_reg.fit_beta()
+    z_pred=Ridge_reg.predict(X)
 
     #Plotting the ridge terrain result with the best degree
     plt.figure()
@@ -188,7 +206,8 @@ def ridge(*args):
     plt.ylabel('Y')
     #plt.title('Ridge regression')
     if 'save' in args :
-        plt.savefig('Terrain_ridge_bestdegree')
+        plt.tight_layout()
+        plt.savefig('Terrain_ridge_bestdegree.png',bbox_inches='tight', dpi=300)
     plt.show()
 
     print(f"Ridge-Mean Squared Error: {MSE(z1,z_pred)}")
@@ -204,7 +223,8 @@ def ridge(*args):
     plt.plot(beta_x, beta_lower, 'k+')
     plt.xlabel('Betas')
     if 'save' in args :
-        plt.savefig('Terrain_ridge_CI')
+        plt.tight_layout()
+        plt.savefig('Terrain_ridge_CI.png',bbox_inches='tight', dpi=300)
     plt.show()
 
     return
@@ -227,12 +247,14 @@ def lasso(*args):
     # Plot MSE with color map
     im = plt.imshow(mse_values, cmap=plt.cm.RdBu, extent = [-10, 0, 1, maxd],
                 interpolation=None, aspect='auto')
-    plt.colorbar(im)
-    plt.xlabel('log10(lambda)')
+    cbar = plt.colorbar(im)
+    cbar.set_label('MSE', rotation=90)
+    plt.xlabel('log$_{10}$(lambda)')
     plt.ylabel('degree of polynomial')
     #plt.title('MSE colormap (Ridge)')
     if 'save' in args :
-        plt.savefig('terrain-lasso-degree-lambda-colormap')
+        plt.tight_layout()
+        plt.savefig('terrain-lasso-degree-lambda-colormap.png',bbox_inches='tight', dpi=300)
     plt.show()
 
     """Performing lasso with the best degree and best lambda"""
@@ -250,7 +272,8 @@ def lasso(*args):
     plt.xlabel('X')
     #plt.title('Lasso regression')
     if 'save' in args :
-        plt.savefig('Terrain_lasso_bestdegree')
+        plt.tight_layout()
+        plt.savefig('Terrain_lasso_bestdegree',bbox_inches='tight', dpi=300)
     plt.show()
 
     print(f"Lasso-Mean Squared Error: {MSE(z1,z_pred)}")
