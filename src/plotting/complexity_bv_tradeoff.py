@@ -39,7 +39,6 @@ for i, X in enumerate(Xs):
 plt.plot(degs, MSEs_train, label="Model fit to train data")
 plt.plot(degs, MSEs_test, label="Model prediction of test data")
 plt.legend()
-plt.title("Mean squared error of the predicted data, given model complexity")
 plt.xlabel("Complexity (Degree of polynomial)"); plt.ylabel("Error (MSE)")
 plt.savefig(os.path.join(out_dir, "complexity.png"))
 
