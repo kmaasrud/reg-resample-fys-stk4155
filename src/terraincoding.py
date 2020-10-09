@@ -238,7 +238,8 @@ def lasso(*args):
     # Plot MSE with color map
     im = plt.imshow(mse_values, cmap=plt.cm.RdBu, extent = [-10, 0, 1, maxd],
                 interpolation=None, aspect='auto')
-    plt.colorbar(im)
+    cbar = plt.colorbar(im)
+    cbar.set_label('MSE', rotation=90)
     plt.xlabel('log$_{10}$(lambda)')
     plt.ylabel('degree of polynomial')
     #plt.title('MSE colormap (Ridge)')
