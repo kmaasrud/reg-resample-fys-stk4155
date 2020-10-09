@@ -4,15 +4,28 @@
 \section{Method and implementation}\label{sec:method}
 The implementation of the code is pretty straight forward, having the regression models in a separate class, for easy use and access. Everything that has something to do with franke's function, for example plotting of the function or accumulation of data from the function is collected in a python file \verb|franke.py|. The resampling techniques is also gathered in a separate python file containing functions used for bootstrap, k-folds and cross validation in the python file \verb|assesment.py|. The last python file worth mentioning is \verb|utils.py| which is a collection of a variety of different functions that is handy during the entire project, including a mean squared error function, $R^2$ score function, a function which makes a design matrix, a single value decomposition function and a bit other convenient functions.
 
+\subsection{Datasets}
+In this work, we study regression on two different datasets. The first dataset is generated from the known two-dimensional Franke's function \cite{FrankeRichard1979}. The second dataset is extracted from real terrain data downloaded from EarthExplorer \cite{EarthExplorer}. 
+
+\subsubsection{Franke's function}
+A dataset, \ensuremath{\mathcal{L}}, is generated with Franke's function (\cref{eq:franke-func}) in accordance with the noisy model (\cref{eq:y}). In other words, the ground-truth is now given by Franke's function with added stochastic noise \ensuremath{\epsilon\sim\mathcal{N}(0,\sigma)} and $n$ random tuples of \ensuremath{x,y \in [0,1]}. Our dataset can then be written
+
+\begin{align*}
+    \mathcal{L}=\{\{(x_1,y_1), (x_2,y_2), \ldots (x_n,y_n),\},\{z(x_1,y_1),z(x_2,y_2), \ldots z(x_n,y_n),\}\},
+\end{align*} for \ensuremath{z(x_i,y_i)=f(x_i,y_i)+\epsilon_i} for \ensuremath{i \in [1, n]}
+
+\subsubsection{Terrain data}
+The terrain data is saved as a standard GeoTIFF image file in which a grid of pixels compose an image. In our case, each pixel has a grayscale value. To fit the data to the regression models, we interpret each pixel value as a function value of some unknown function \ensuremath{z(x,y)=f(x,y)+\epsilon}, with both \ensuremath{f(x,y)} and $\epsilon$ are unknowns. We parametrize the grid to obtain the \ensuremath{(x,y)}-tuples needed to construct the design matrix. 
+
 \subsection{The design matrix}
-To create the design matrix, the x and y arrays are sent into a function together with the desired degree of polynomial. Then the function checks the lengths of the arrays and the degree wanted, and uses this to calculate the dimensions of the design matrix needed to have the matrix on the form like the Vandermonde matrix discussed in the theory section. Then a double for loop is used to fill an identity matrix of the desired dimensions with the preferred x and y combinations to represent the right polynomials.
+To create the design matrix, the $x$ and $y$ arrays are sent into a function together with the desired degree of polynomial. Then the function checks the lengths of the arrays and the degree wanted, and uses this to calculate the dimensions of the design matrix needed to have the matrix on the form like the Vandermonde matrix discussed in the theory section. Then a double for loop is used to fill an identity matrix of the desired dimensions with the preferred $x$ and $y$ combinations to represent the right polynomials.
 
 \subsubsection{Input- design matrix}
-It is natural to start wondering how the x and y data that is sent into the design matrix function is produced. This is quiet easy done by making arrays of the size N=20 with values between between 0 and 1, and applying frankes function to the data points.
+It is natural to start wondering how the $x$ and $y$ data that is sent into the design matrix function is produced. This is quiet easy done by making arrays of the size $N=20$ with values between between 0 and 1, and applying frankes function to the data points.
 
 \subsection{Regression methods}
 \subsubsection{Ridge}
-To explain the implementation of the regression methods, it makes more sense to explain the ridge class first. The implemented ridge class starts of by defining different variables like the design matrix X, the dimensions n and p, y, lambdas lmb and the betas.
+To explain the implementation of the regression methods, it makes more sense to explain the ridge class first. The implemented ridge class starts of by defining different variables like the design matrix $X$, the dimensions $n$ and $p$, $y$, lambdas lmb and the betas.
 
 Then the ridge coefficient vector is calculated the way explained in the theory section (\ref{rid}), which is easier to understand by seeing the code
 \begin{python}
@@ -25,7 +38,7 @@ Where the \verb|linalg| package is being used to invert the matrix. After this t
 The OLS method is computed by using the ridge class, which was the reason the ridge class was explained first. The difference between the implementations is that in OLS, $\lambda=0$. Which makes it quiet straight forward to call the class and accessing the methods.
 
 \subsubsection{Lasso}
-Using the Lasso regression method the implementation was done by using scikit-learn, which is a python library with various machine learning algorithms \cite{scikitlearn}. The method was performed by the following code
+Using the Lasso regression method the implementation was done by using \verb|scikit-learn|, which is a python library with various machine learning algorithms \cite{scikitlearn}. The method was performed by the following code
 \begin{python}
     def fit_beta(self):
         sklearn_lasso = linear_model.Lasso(alpha=self.lmb)
@@ -36,9 +49,9 @@ where the \verb|self.X| is the design matrix and \verb|self.y| is the response.
 
 \subsection{Resampling}
 \subsubsection{Cross validation}
-The implementation of the cross validation is based on the two functions \verb|kfolds| which splits up the data into k number of folds, and \verb|CV| which is performing the cross validation itself.
+The implementation of the cross validation is based on the two functions \verb|kfolds| which splits up the data into $k$ number of folds, and \verb|CV| which is performing the cross validation itself.
 
-The design matrix is sent into the CV function as an argument along the output array, the amount of folds wanted and a lambda value if wanted. The arguments is then used to define the folds by sending them into the kfold function. Within the calculations of kfold the data is shuffled, and split into folds of equally lengths by using a loop. After this the excessive data that was not enough to make a fold, is appended the different folds already made by using a loop. The folds is the returned to the main CV function as a list of k tuples where each tuple is being a $(X, y)$ pair.
+The design matrix is sent into the CV function as an argument along the output array, the amount of folds wanted and a lambda value if wanted. The arguments is then used to define the folds by sending them into the kfold function. Within the calculations of kfold the data is shuffled, and split into folds of equally lengths by using a loop. After this the excessive data that was not enough to make a fold, is appended the different folds already made by using a loop. The folds is the returned to the main CV function as a list of $k$ tuples where each tuple is being a $(X, y)$ pair.
 
 Each fold is then taken further into the CV function where it chooses an element in the fold and sets the rest of the elements as training data. The current element is set test data. The chosen regression methods is then performed and the predicted and test values is added to the mean squared class to calculate the error.
 

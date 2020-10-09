@@ -39,13 +39,17 @@ for i, X in enumerate(Xs):
 plt.plot(degs, MSEs_train, label="Model fit to train data")
 plt.plot(degs, MSEs_test, label="Model prediction of test data")
 plt.legend()
-plt.title("Mean squared error of the predicted data, given model complexity")
 plt.xlabel("Complexity (Degree of polynomial)"); plt.ylabel("Error (MSE)")
 plt.savefig(os.path.join(out_dir, "complexity.png"))
 
 plt.clf()
 
-degs = list(range(1,10))
+N = 40
+x = np.linspace(0, 1, N); y = np.linspace(0, 1, N)
+x, y = np.meshgrid(x, y)
+x = np.ravel(x); y = np.ravel(y)
+Y = franke(x, y, noise=False)
+degs = list(range(1,15))
 Xs = [design_matrix(x, y, deg) for deg in degs]
 variances = []
 biases = []
@@ -59,4 +63,5 @@ for i, X in enumerate(Xs):
 plt.plot(degs, variances, label="Variance")
 plt.plot(degs, biases, label="Bias")
 plt.legend()
+plt.xlabel("Complexity (Degree of polynomial)"); plt.ylabel("Bias/Variance")
 plt.savefig(os.path.join(out_dir, "var.png"))
