@@ -131,8 +131,12 @@ def OLS_terrain(*args):
         beta_x = np.arange(len(beta))
         beta_lower, beta_upper =CI(X, beta, 95, z1, z_pred, n)
 
+        #Scaling the betas
+        beta_lower = (np.array(beta_lower))/10000000
+        beta_upper = (np.array(beta_upper))/10000000
+
         #Plotting the confidence intervals for OLS terrain
-        plt.plot(beta_x, beta, 'mo', label='betas')
+        plt.plot(beta_x, beta/10000000, 'mo', label='betas')
         plt.plot(beta_x, beta_upper, 'k+')
         plt.plot(beta_x, beta_lower, 'k+')
         plt.xlabel('Betas')
@@ -260,6 +264,6 @@ OLS_plot= Perform OLS on the choosen part of terrain, and show the plot
 CI=Find the confidence intervals and plot them"""
 
 """If you want to save the figures, use 'save' as argument"""
-OLS_terrain('best_deg', 'OLS_plot', 'CI','save')
+OLS_terrain('best_deg', 'OLS_plot', 'CI')
 #ridge('save')
 #lasso('save')
