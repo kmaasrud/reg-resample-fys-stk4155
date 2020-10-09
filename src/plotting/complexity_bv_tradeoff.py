@@ -45,7 +45,12 @@ plt.savefig(os.path.join(out_dir, "complexity.png"))
 
 plt.clf()
 
-degs = list(range(1,10))
+N = 40
+x = np.linspace(0, 1, N); y = np.linspace(0, 1, N)
+x, y = np.meshgrid(x, y)
+x = np.ravel(x); y = np.ravel(y)
+Y = franke(x, y, noise=False)
+degs = list(range(1,15))
 Xs = [design_matrix(x, y, deg) for deg in degs]
 variances = []
 biases = []
