@@ -91,13 +91,13 @@ def OLS_terrain(*args):
             temp=abs(errors_test[i]-errors_train[i])
             if temp<k:
                 k=temp
-                best_deg=i+1
+                best_deg=i
 
         print(f"The best degree to use further is d={best_deg}")
 
     """Performing OLS with the best degree"""
     if 'OLS_plot' and not 'best_deg' in args:
-        best_deg=12
+        best_deg=13
     elif 'OLS_plot' in args:
         X=design_matrix(x1, y1, best_deg)
 
@@ -114,11 +114,11 @@ def OLS_terrain(*args):
 
         #Plotting the OLS terrain result with the best degree
         plt.figure()
-        plt.title("OLS")
+        #plt.title("OLS")
         plt.imshow(z_pred.reshape(y_arr, x_arr), cmap='bone', extent=[1010,1030,1530,1510])
+        plt.xticks(rotation=45)
         plt.xlabel('X')
         plt.ylabel('Y')
-        plt.xticks(rotation=45)
         if 'save' in args :
             plt.savefig('Terrain_OLS_bestdegree')
         plt.show()
@@ -179,10 +179,10 @@ def ridge(*args):
     #Plotting the ridge terrain result with the best degree
     plt.figure()
     plt.imshow(z_pred.reshape(y_arr, x_arr), cmap='bone', extent=[1010,1030,1530,1510])
-    plt.xlabel('X')
     plt.xticks(rotation=45)
+    plt.xlabel('X')
     plt.ylabel('Y')
-    plt.title('Ridge regression')
+    #plt.title('Ridge regression')
     if 'save' in args :
         plt.savefig('Terrain_ridge_bestdegree')
     plt.show()
@@ -241,10 +241,10 @@ def lasso(*args):
     #Plotting the ridge terrain result with the best degree
     plt.figure()
     plt.imshow(z_pred.reshape(y_arr, x_arr), cmap='bone', extent=[1010,1030,1530,1510])
-    plt.xlabel('X')
     plt.xticks(rotation=45)
     plt.ylabel('Y')
-    plt.title('Lasso regression')
+    plt.xlabel('X')
+    #plt.title('Lasso regression')
     if 'save' in args :
         plt.savefig('Terrain_lasso_bestdegree')
     plt.show()
@@ -261,5 +261,5 @@ CI=Find the confidence intervals and plot them"""
 
 """If you want to save the figures, use 'save' as argument"""
 #OLS_terrain('best_deg', 'OLS_plot', 'CI')
-ridge()
-#lasso()
+#ridge('save')
+#lasso('save')
