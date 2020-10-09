@@ -64,4 +64,5 @@ for i, X in enumerate(Xs):
 plt.plot(degs, variances, label="Variance")
 plt.plot(degs, biases, label="Bias")
 plt.legend()
+plt.xlabel("Complexity (Degree of polynomial)"); plt.ylabel("Bias/Variance")
 plt.savefig(os.path.join(out_dir, "var.png"))
