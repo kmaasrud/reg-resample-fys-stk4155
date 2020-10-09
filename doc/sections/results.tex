@@ -6,21 +6,22 @@
 
 \subsubsection{OLS regression}
 \subsubsection{The bias-variance tradeoff}
-With a dataset of values produced from Franke's function, we've fitted a model based on the training set and predicted new data based on the testing set. This was done with a design matrix of increasing degrees, from $1$ to $9$. The following figure \ref{fig:result_complexity} is a plot relating the mean squared error of the model to the complexity (or degree).
+With a dataset of values produced from Franke's function (number of datapoints $N=18$, with random normally distributed noise added), we've fitted a model based on the training set and predicted new data based on the testing set. This was done with a design matrix of increasing degrees, from $1$ to $9$. The following figure \ref{fig:result_complexity} is a plot relating the mean squared error of the model to the complexity (or degree).
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{../assets/complexity.png}
-    \caption{The error of a model based on the train and test set respectively, in relation to the degree of the model.}
+    \caption{The error of a model based on the train and test set respectively, in relation to the polynomial degree of the model.}
     \label{fig:result_complexity}
 \end{figure}
 
-% Preliminary explanation of bias-variance plot. I don't think the plot looks very nice right now...
+Once again, we produce a dataset from the Franke function (number of datapoints $N=40$, no noise added) and fit the model to design matrices of varying degree, from 1 to 15. Using The Bootstrap, we record the bias and variance (as they are explained in section \ref{sec:bv_decomp}. Figure \ref{fig:result_bias_variance} shows their relation with increasing complexity/degree of polynomial. 
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{../assets/var.png}
     \label{fig:result_bias_variance}
+    \caption{Bias and variance plotted in relation to the polynomial degree of the model.}
 \end{figure}
 
 The above results uses bootstrapping as an assessment technique. We have also implemented $K$-fold cross-validation, and figure \ref{fig:result_cv_boot_mse} shows how their calculated MSE compares
