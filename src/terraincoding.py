@@ -111,17 +111,25 @@ def OLS_terrain(*args):
     elif 'OLS_plot' in args:
         X=design_matrix(x1, y1, best_deg)
 
-        #Couldn't call class, got assertion error for some reason
-        #OLS_reg=OLS(X,z1)
-        #beta=OLS_reg.fit_beta()
-        #z_pred=OLS_reg.predict()
-
         #OLS method by using inverse function from lecture slides
         A=X.T @ X
         beta=SVDinv(A)@X.T@z1
         #beta=np.linalg.pinv(X.T@X)@X.T@z1
         z_pred=X@beta
 
+        #Plotting the OLS terrain result with the best degree
+        plt.figure()
+        plt.imshow(z_pred.reshape(y_arr, x_arr), cmap='bone', extent=[1010,1030,1530,1510])
+        plt.xticks(rotation=45)
+        plt.xlabel('X')
+        plt.ylabel('Y')
+        #plt.title('Ridge regression')
+        if 'save' in args :
+            plt.tight_layout()
+            plt.savefig('Terrain_ridge_bestdegree.png',bbox_inches='tight', dpi=300)
+        plt.show()
+
+        """
         #Plotting the OLS terrain result with the best degree
         plt.figure()
         #plt.title("OLS")
@@ -133,6 +141,7 @@ def OLS_terrain(*args):
             plt.tight_layout()
             plt.savefig('Terrain_OLS_bestdegree.png',bbox_inches='tight', dpi=300)
         plt.show()
+        """
 
         print(f"OLS-Mean Squared Error: {MSE(z1,z_pred)}")
         print(f"OLS-R2-score: {R2(z1,z_pred)}")
