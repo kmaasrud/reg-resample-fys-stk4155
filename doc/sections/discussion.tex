@@ -5,19 +5,19 @@
 \subsection{Methods applied to Franke's function}
 
 \subsection{Methods applied to Terrain data}
-By comparing the statistical values MSE and $R^2$ for the three models it is possible to determine which regression model has the best prediction to the terrain dataset. Since the MSE is a statistical value for the errors, the less the value of MSE the better. The $R^2$ score is a measurement of how well the model predicts, and account for the variance. Closer to 1 the $R^2$ score is the better the prediction is.\\
+By comparing the statistical values MSE and $R^2$ for the three models it is possible to determine which regression model has the best prediction to the terrain dataset. Since the MSE is a statistical value of the errors, the less the value of MSE the better. The $R^2$ score is a measurement of how well the model predicts, and account for the variance. Closer to 1 the $R^2$ score is, the better the prediction is.\\
 
 Having a look at table \ref{tab:statistical_results}, the MSE for OLS is a bit high having a value of 160.9 with a $R^2$ score that is doing quiet well, 0.9156. The OLS regression parameters in figure \ref{fig:OLS_CI} also seem to have quiet low variance which is supporting the good $R^2$ score. Looking at the Ridge results it is easy to see that the MSE and $R^2$ score are extremely good with about the value of 1 for each one. The LASSO regression was also doing quite good with a $R^2$ score that is about the same as Ridge, but with a bit higher MSE, 9.56.  All though the methods are predicting the data quiet good, Ridge and LASSO having such low MSE and high $R^2$ score, makes them belong a couple of levels higher than OLS.
 
 \begin{table}[H]
 \begin{center}
-\begin{tabular}{ |c|c|c|c| } 
+\begin{tabular}{ |c|c|c|c|c| } 
  \hline
-  & OLS & Ridge & LASSO \\ 
+  & OLS & Ridge & & LASSO \\ 
  \hline
- MSE & 160.9 & 0.9099 & 9.56\\
+ MSE & 160.9 & & 0.9099 & 9.56\\
  \hline
- $R^2$ & 0.9156 & 0.9995 & 0.9949 \\ 
+ $R^2$ & 0.9156 & & 0.9995 & 0.9949 \\ 
  \hline
 \end{tabular}
 \label{tab:statistical_results}
