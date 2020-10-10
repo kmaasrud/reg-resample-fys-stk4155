@@ -2,7 +2,7 @@
 
 \begin{document}
 \section{Results}\label{sec:results}
-
+\subsection{Franke's function}
 \subsubsection{Actual prediction of data}
 We use a dataset of $N=100$ datapoints generated from the Franke function (including noise from the normal distribution, with $\sigma=0.1$), and split it into a training and testing set. Figure \ref{fig:result_actual_plot} shows the testing set plotted in 3D, which is what we aim at recreating.
 
@@ -13,28 +13,31 @@ We use a dataset of $N=100$ datapoints generated from the Franke function (inclu
     \label{fig:result_actual_plot}
 \end{figure}
 
+Figure \ref{fig:result_reg_plots} shows the 
+
 \begin{figure}[h]
     \centering
-    \begin{subfigure}[b]{0.3\textwidth}
+    \begin{subfigure}[b]{0.48\textwidth}
         \centering
-        \includegraphics[width=1.2\textwidth]{../assets/ols_franke_plot.png}
+        \includegraphics[width=\textwidth]{../assets/ols_franke_plot.png}
         \caption{OLS}
         \label{fig:result_ols_plot}
     \end{subfigure}
-    \begin{subfigure}[b]{0.3\textwidth}
+    \quad
+    \begin{subfigure}[b]{0.48\textwidth}
         \centering
-        \includegraphics[width=1.2\textwidth]{../assets/lasso_franke_plot.png}
+        \includegraphics[width=\textwidth]{../assets/lasso_franke_plot.png}
         \caption{Lasso}
     \end{subfigure}
-    \begin{subfigure}[b]{0.3\textwidth}
+    
+    \begin{subfigure}[b]{0.48\textwidth}
         \centering
-        \includegraphics[width=1.2\textwidth]{../assets/ridge_franke_plot.png}
+        \includegraphics[width=\textwidth]{../assets/ridge_franke_plot.png}
         \caption{Ridge}
     \end{subfigure}
     \caption{Prediction of the data shown in figure \ref{fig:result_actual_plot} using different regression methods.}
+    \label{fig:result_reg_plots}
 \end{figure}
-
-\subsection{Franke's function}
 
 \subsubsection{The bias-variance tradeoff}
 With a dataset of values produced from Franke's function (number of datapoints $N=18$, with random normally distributed noise added), we've fitted a model based on the training set and predicted new data based on the testing set. This was done with a design matrix of increasing degrees, from $1$ to $9$. The following figure \ref{fig:result_complexity} is a plot relating the mean squared error of the model to the complexity (or degree).
@@ -100,7 +103,7 @@ Ordinary least squares method was performed on the terrain data, the results fro
    \quad
    \begin{subfigure}[b]{0.45\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{../assets/Terrain_OLS_bestdegree_new.png} 
+    \includegraphics[width=\textwidth]{../assets/Terrain_OLS_bestdegree_newnew.png} 
     \caption{}
     \label{fig:OLS-estimate}
    \end{subfigure}
@@ -142,8 +145,10 @@ The confidence intervals of the parameters $\beta$ were also calculated for the 
    \label{fig:terrain-ridge}
 \end{figure} 
 
+Ridge method was also performed with smaller spacing of $\lambda$ in a smaller interval. Letting $\lambda$ iterate in the interval $\log_{10}[ -4,0 $] with the minimum MSE found to be 5.043 for \ensuremath{d=22} and \ensuremath{\lambda=0.0001\cdot 10^{-10}}. The obtained MSE and R2-scores are 3.748 and 0.9980, respectively. The colormap and the terrain for this run can be seen in the github folder under \verb|terrain_result/OLS_terrain|. 
+
 \subsubsection{Lasso regression}
-\autoref{fig:lasso_regularization} depicts the computed regularization path MSE$(d,\log_{10}(\lambda))$ with 5-fold cross validation. The minimum MSE is found with \ensuremath{d=17} and \ensuremath{\lambda=1.50 \cdot 10^{-3}}. \autoref{fig:lasso-estimate} shows the result of performing Ridge regression with $d=18$ and $\lambda=2.22 \cdot 10^{-3}$ on the terrain dataset. We obtain MSE and R2-scores of 11.01 and 0.9942, respectively. 
+\autoref{fig:lasso_regularization} depicts the computed regularization path MSE$(d,\log_{10}(\lambda))$ with 5-fold cross validation. The minimum MSE is found with \ensuremath{d=21} and \ensuremath{\lambda=1.51 \cdot 10^{-3}}. \autoref{fig:lasso-estimate} shows the result of performing Ridge regression with $d=121$ and $\lambda=1.51 \cdot 10^{-3}$ on the terrain dataset. We obtain MSE and R2-scores of 9.56 and 0.9949, respectively.
 
 \begin{figure}[H] 
    \centering
@@ -160,7 +165,7 @@ The confidence intervals of the parameters $\beta$ were also calculated for the 
     \caption{}
     \label{fig:lasso-estimate}
    \end{subfigure}
-   \caption{(a) Color map: Defining the MSE by color. The MSE is calculated for every combination of $\lambda$ and the degree of polynomial. Degrees up to 30 and $\lambda$ in the interval $\log_{10}[ -10,0 $] divided into 35 uniformly spaced values was used to find the best parameters. \\ (b) The result of Lasso performed on the terrain data with degree=17 and $\lambda=1.50 \cdot 10^{-3}$.}
+   \caption{(a) Color map: Defining the MSE by color. The MSE is calculated for every combination of $\lambda$ and the degree of polynomial. Degrees up to 50 and $\lambda$ in the interval $\log_{10}[ -12,0 $] divided into 50 uniformly spaced values was used to find the best parameters. \\ (b) The result of Lasso performed on the terrain data with degree=21 and $\lambda=1.51 \cdot 10^{-3}$.}
    \label{fig:terrain-lasso}
 \end{figure} 
 
