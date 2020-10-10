@@ -41,4 +41,38 @@ Assuming full column rank for $\mathbf X$, $(\mathbf X^T \mathbf X)$ is thus pos
 \subsection{Deriving the bias-variance decomposition}\label{sec:bv_decomp}
 We a
 
+The first step is to substitute \cref{eq:y} into \cref{eq:cost-function}, and add and subtract the expectation value of the estimator variable \ensuremath{\mathbb{E}[\mathbf{\tilde{y}}]}. We get 
+
+\begin{align}
+    \mathbb{E}\left[(\mathbf{f}+\mathbf{\epsilon}-\mathbf{\tilde{y}}+\mathbb{E}[\mathbf{\tilde{y}}]-\mathbb{E}[\mathbf{\tilde{y}}])^2\right] = \sum_{i}\mathbb{E}\left[((\mathbf{f}-\mathbb{E}[\mathbf{\tilde{y}}])+\mathbf{\epsilon}+(\mathbb{E}[\mathbf{\tilde{y}}]-\mathbf{\tilde{y}}))^2\right]. 
+\end{align} By writing out this expression and using that \ensuremath{\mathbb{E}[\mathbf{\epsilon}]=0} and \ensuremath{\mathbb{E}[\mathbf{f}]=f} we get
+
+\begin{align*}
+    \mathbb{E}\left[(\mathbf{f}+\mathbf{\epsilon}-\mathbf{\tilde{y}}+\mathbb{E}[\mathbf{\tilde{y}}]-\mathbb{E}[\mathbf{\tilde{y}}])^2\right] &= 
+    \mathbb{E}[(\mathbf{f}-\mathbb{E}[\mathbf{\tilde{y}}])]+\mathbb{E}[\mathbf{\epsilon^2}]+\mathbb{E}[\mathbb{E}[\mathbf{\tilde{y}}]-\mathbf{\tilde{y}}]\\&+\underbrace{2\mathbb{E}[\boldsymbol{\epsilon}(\mathbb{E}[\mathbf{\tilde{y}}]-\mathbf{\tilde{y}})]}_{\text{=0}}+\underbrace{2\mathbb{E}[\boldsymbol{\epsilon}(\mathbf{f}-\mathbb{E}[\mathbf{\tilde{y}}])]}_{\text{=0}}\\&+\underbrace{\mathbb{E}[(\mathbf{f}-\mathbb{E}[\mathbf{\tilde{y}}])(\mathbb{E}[\mathbf{\tilde{y}}-\mathbf{\tilde{y}})]}_{\text{=0}}
+\end{align*} Thus, we are left with 
+
+\begin{align*}
+    (\mathbf{f}-\mathbb{E}[\mathbf{\tilde{y}}])^2+\mathbb{E}[\boldsymbol{\epsilon^2}]+\mathbb{E}[(\mathbb{E}[\mathbf{\tilde{y}}]-\mathbf{\tilde{y}})^2].
+\end{align*}
+
+The variance of the response variable is given by
+\begin{align*}
+    \mathrm{Var}(\mathbf{f}+\boldsymbol{\epsilon})&=\mathbb{E}[(\mathbf{f}+\boldsymbol{\epsilon})^2]-\mathbb{E}[\mathbf{f}+\boldsymbol{\epsilon}]\\&=\mathbb{E}[\mathbf{y}]^2+\underbrace{2\mathbb{E}[\mathbf{f}]\mathbb{E}[\boldsymbol{\epsilon}]}_{=0}+\mathbb{E}[\boldsymbol{\epsilon}^2]+(\underbrace{\mathbb{E}[\boldsymbol{\epsilon}]}_{=0}+\mathbb{E}[\mathbf{f}])^2
+\end{align*} We see that 
+
+\begin{align*}
+    \mathrm{Var}(\mathbf{f}+\boldsymbol{\epsilon})=\mathbb{E}[\boldsymbol{\epsilon}^2]=\sigma^2.
+\end{align*} The bias is defined as \ensuremath{(\mathbf{f}-\mathbb{E}[\mathbf{\tilde{y}}])^2=\mathrm{Bias}(\mathbf{\tilde{y}})}. \ensuremath{\mathbb{E}[(\mathbb{E}[\mathbf{\tilde{y}}]-\mathbf{\tilde{y}})^2]} can be rewritten as
+
+\begin{align*}
+    \mathbb{E}[(\mathbb{E}[\mathbf{\tilde{y}}]-\mathbf{\tilde{y}})^2] &=\mathbb{E}[\mathbb{E}[\mathbf{\tilde{y}}]]-2\mathbb{E}[\mathbf{\tilde{y}}]\mathbb{E}[\mathbb{E}[\mathbf{\tilde{y}}]+\mathbb{E}[\mathbf{\tilde{y}}]^2]\\
+    &=\mathbb{E}[\mathbf{\tilde{y}}^2]-\mathbb{E}[\mathbf{\tilde{y}}]^2\\
+    &=\mathrm{Var}(\mathbf{\tilde{y}})
+\end{align*} By discretizing this equation the expression above can be written as
+
+\begin{align*}
+    \mathbb{E}[(\mathbb{E}[\mathbf{\tilde{y}}]-\mathbf{\tilde{y}})^2]=\mathrm{Var}(\mathbf{\tilde{y}})=\frac{1}{n}\sum_{i=0}^{n-1}(\tilde{y}_i-\mathbb{E}[\mathbf{\tilde{y}})^2]
+\end{align*}
+
 \end{document}
