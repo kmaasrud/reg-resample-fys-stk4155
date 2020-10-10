@@ -165,8 +165,11 @@ Consider a dataset \ensuremath{\mathcal{L}} consisting of the data \ensuremath{\
     C(\mathbf{X}, \boldsymbol{\beta}) = \frac{1}{n}\sum_{i=0}^{n-1}(y_i-\tilde{y}_i)^2=\mathbb{E}\left[(\mathbf{y}-\mathbf{\tilde{y}})^2\right].
     \label{eq:cost-function}
 \end{align} We want to decompose \cref{eq:cost-function} so that it can be expressed as the sum of bias, variance and the standard deviation. This derivation can be found in \hyperref[sec:bv_decomp]{appendix \ref*{sec:bv_decomp}}, where we obtain the result
+
 \begin{align}
     \mathbb{E}\left[(\mathbf{y}-\mathbf{\tilde{y}})^2\right]&=\frac{1}{n}\sum_i(f_i-\mathbb{E}\left[\mathbf{\tilde{y}}\right])^2+\frac{1}{n}\sum_i(\tilde{y}_i-\mathbb{E}\left[\mathbf{\tilde{y}}\right])^2+\sigma^2\\
     &=\mathrm{Bias}[\mathbf{\tilde{y}}]^2+\sigma^2+\mathrm{Var}[\mathbf{\tilde{y}}].
 \end{align}
+
+The squared bias term is a measure of the best out-of-sample error in the infinite data-limit. The variance, intuitively, measures how much the learning method will fluctuate around its mean. An increasingly complex model, will capture more data points, and the bias will generally decrease as a function of model complexity. However, complexity will generally increase the variance. We say that the model is \textit{underfitted} when a low model complexity gives a high bias and low variance, and that the model is \textit{overfitted} when a high model complexity gives a low bias and high variance. Thus, we need to find the optimal choice of complexity that gives the lowest possible out-of-sample error. 
 \end{document}

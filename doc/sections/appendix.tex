@@ -39,13 +39,18 @@ Assuming full column rank for $\mathbf X$, $(\mathbf X^T \mathbf X)$ is thus pos
 
 % ------------------------------------------------
 \subsection{Deriving the bias-variance decomposition}\label{sec:bv_decomp}
-We a
+The cost fuction is defined as
 
-The first step is to substitute \cref{eq:y} into \cref{eq:cost-function}, and add and subtract the expectation value of the estimator variable \ensuremath{\mathbb{E}[\mathbf{\tilde{y}}]}. We get 
+\begin{align*}
+    C(\mathbf{X}, \boldsymbol{\beta}) = \frac{1}{n}\sum_{i=0}^{n-1}(y_i-\tilde{y}_i)^2=\mathbb{E}\left[(\mathbf{y}-\mathbf{\tilde{y}})^2\right].
+    %\label{eq:cost-function}
+\end{align*} We want to decompose the cost function so that it can be expressed as the sum of bias, variance and the standard deviation. 
 
-\begin{align}
+The first step is to substitute \ensuremath{\mathbf{y}=f(\mathbf{x})+\boldsymbol{\epsilon}} into the cost function, and add and subtract the expectation value of the estimator variable \ensuremath{\mathbb{E}[\mathbf{\tilde{y}}]}. We get 
+
+\begin{align*}
     \mathbb{E}\left[(\mathbf{f}+\mathbf{\epsilon}-\mathbf{\tilde{y}}+\mathbb{E}[\mathbf{\tilde{y}}]-\mathbb{E}[\mathbf{\tilde{y}}])^2\right] = \sum_{i}\mathbb{E}\left[((\mathbf{f}-\mathbb{E}[\mathbf{\tilde{y}}])+\mathbf{\epsilon}+(\mathbb{E}[\mathbf{\tilde{y}}]-\mathbf{\tilde{y}}))^2\right]. 
-\end{align} By writing out this expression and using that \ensuremath{\mathbb{E}[\mathbf{\epsilon}]=0} and \ensuremath{\mathbb{E}[\mathbf{f}]=f} we get
+\end{align*} By writing out this expression and using that \ensuremath{\mathbb{E}[\mathbf{\epsilon}]=0} and \ensuremath{\mathbb{E}[\mathbf{f}]=f} we get
 
 \begin{align*}
     \mathbb{E}\left[(\mathbf{f}+\mathbf{\epsilon}-\mathbf{\tilde{y}}+\mathbb{E}[\mathbf{\tilde{y}}]-\mathbb{E}[\mathbf{\tilde{y}}])^2\right] &= 
@@ -73,6 +78,13 @@ The variance of the response variable is given by
 
 \begin{align*}
     \mathbb{E}[(\mathbb{E}[\mathbf{\tilde{y}}]-\mathbf{\tilde{y}})^2]=\mathrm{Var}(\mathbf{\tilde{y}})=\frac{1}{n}\sum_{i=0}^{n-1}(\tilde{y}_i-\mathbb{E}[\mathbf{\tilde{y}})^2]
+\end{align*}
+
+Finally, we obtain the result
+
+\begin{align*}
+    \mathbb{E}\left[(\mathbf{y}-\mathbf{\tilde{y}})^2\right]&=\frac{1}{n}\sum_i(f_i-\mathbb{E}\left[\mathbf{\tilde{y}}\right])^2+\frac{1}{n}\sum_i(\tilde{y}_i-\mathbb{E}\left[\mathbf{\tilde{y}}\right])^2+\sigma^2\\
+    &=\mathrm{Bias}[\mathbf{\tilde{y}}]^2+\sigma^2+\mathrm{Var}[\mathbf{\tilde{y}}].
 \end{align*}
 
 \end{document}
