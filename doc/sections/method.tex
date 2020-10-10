@@ -2,7 +2,9 @@
 \begin{document}
 
 \section{Method and implementation}\label{sec:method}
-The implementation of the code is pretty straight forward, having the regression models in a separate class, for easy use and access. Everything that has something to do with Franke's function, for example plotting of the function or accumulation of data from the function is collected in a python file \verb|franke.py|. The main codes is \verb|franke.py| and \verb|terraincoding.py| where most of the parts that has to do with the terrain is coded. The resampling techniques is also gathered in a separate python file containing functions used for bootstrap, k-folds and cross validation in the python file \verb|assesment.py|. The last python file worth mentioning is \verb|utils.py| which is a collection of a variety of different functions that is handy during the entire project, including a mean squared error function, $R^2$ score function, a function which makes a design matrix, a single value decomposition function and a bit other convenient functions.
+We've placed most of our general code in the root \verb|src| directory. \verb|regression_methods.py| holds all regression classes. The Franke function is defined in \verb|franke.py|. \verb|terraincoding.py| contains most of the parts that has to do with the terrain dataset. The resampling techniques are gathered in a separate script - \verb|assesment.py| - containing functions used for bootstrapping and $K$-Fold cross-validation. Lastly, \verb|utils.py| is a collection of a variety of different functions that are handy throughout the entire project, including a mean squared error function, $R^2$ score function, a function for constructing the design matrix, a single value decomposition function and a some other key functions.
+
+Some subdirectories are used for "throwaway" scripts used for producing the actual plots. These are named accordingly.
 
 \subsection{Datasets}
 In this work, we study regression on two different datasets. The first dataset is generated from the known two-dimensional Franke's function \cite{FrankeRichard1979}. The second dataset is extracted from real terrain data downloaded from EarthExplorer \cite{EarthExplorer}. 
@@ -21,7 +23,7 @@ The terrain data is saved as a standard GeoTIFF image file in which a grid of pi
 To create the design matrix, the $x$ and $y$ arrays are sent into a function together with the desired degree of polynomial. Then the function checks the lengths of the arrays and the degree wanted, and uses this to calculate the dimensions of the design matrix needed to have the matrix on the form like the Vandermonde matrix discussed in the theory section. Then a double for loop is used to fill an identity matrix of the desired dimensions with the preferred $x$ and $y$ combinations to represent the right polynomials.
 
 \subsubsection{Input- design matrix}
-It is natural to start wondering how the $x$ and $y$ data that is sent into the design matrix function is produced. This is quiet easy done by making arrays of the size $N=20$ with values between between 0 and 1, and applying frankes function to the data points.
+It is natural to start wondering how the $x$ and $y$ data that is sent into the design matrix function is produced. This is done by making arrays of the size $N=18$ with values between between 0 and 1, and applying frankes function to the data points.
 
 \subsection{Regression methods}
 \subsubsection{Ridge}

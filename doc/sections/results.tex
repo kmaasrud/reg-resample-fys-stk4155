@@ -39,6 +39,16 @@ Figure \ref{fig:result_reg_plots} shows the predictions of this data, using diff
     \label{fig:result_reg_plots}
 \end{figure}
 
+The confidence intervals was also calculated and can be seen in figure \ref{fig:ols}
+
+\begin{figure}[H]
+ \centering
+    \includegraphics[width=0.8\textwidth]{../assets/ols_franke_CI.png} 
+    \caption{The regression parameters $\beta$ for the OLS regression method, calculated with a confidence interval of 95\%}
+    \label{fig:OLS_CI_franke}
+\end{figure}
+
+
 \subsubsection{The bias-variance tradeoff}
 With a dataset of values produced from Franke's function (number of datapoints $N=18$, with random normally distributed noise added), we've fitted a model based on the training set and predicted new data based on the testing set. This was done with a design matrix of increasing degrees, from $1$ to $9$. The following figure \ref{fig:result_complexity} is a plot relating the mean squared error of the model to the complexity (or degree).
 
