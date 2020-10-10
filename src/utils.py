@@ -42,7 +42,7 @@ def mean_value(y):
 @jit
 def design_matrix(x, y, d):
     """Function for setting up a design X-matrix with rows [1, x, y, x², y², xy, ...]
-    Input: x and y mesh, keyword argument d is the degree.
+    Input: x and y mesh, argument d is the degree.
     """
 
     if len(x.shape) > 1:
@@ -62,6 +62,7 @@ def design_matrix(x, y, d):
     return X
 
 
+# Unused non-functional design matrix constructor
 def make_design_matrix(*param_arrays, poly_deg=1):
     """Takes a collection of input arrays and returns the corresponding design matrix.
     The keyword argument poly_deg specifies which degree polynomial you want the design matrix to depict.
@@ -85,10 +86,7 @@ def make_design_matrix(*param_arrays, poly_deg=1):
 
     n_inputs = len(param_arrays)
     polynomial_permutations = [perm for perm in product(range(poly_deg + 1), repeat=n_inputs) if sum(perm) == poly_deg]
-    print(polynomial_permutations)
-    print(param_arrays)
     p = len(polynomial_permutations)
-    print(p)
     n = len(param_arrays[0])
 
     X = np.ones((n, p + 1))
@@ -97,7 +95,6 @@ def make_design_matrix(*param_arrays, poly_deg=1):
         term = 0
         for j, power in enumerate(perm):
             X[:, i+1] *= param_arrays[j] ** power
-
 
     return X
 
