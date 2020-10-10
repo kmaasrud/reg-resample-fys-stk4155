@@ -18,9 +18,9 @@ With a dataset of values produced from Franke's function (number of datapoints $
 Once again, we produce a dataset from the Franke function (number of datapoints $N=40$, no noise added) and fit the model to design matrices of varying degree, from 1 to 15. Using The Bootstrap, we record the bias and variance (as they are explained in section \ref{sec:bv_decomp}. Figure \ref{fig:result_bias_variance} shows their relation with increasing complexity/degree of polynomial. 
 
 \begin{figure}[h]
+    \label{fig:result_bias_variance}
     \centering
     \includegraphics[width=\textwidth]{../assets/var.png}
-    \label{fig:result_bias_variance}
     \caption{Bias and variance plotted in relation to the polynomial degree of the model.}
 \end{figure}
 
@@ -37,83 +37,102 @@ The above results uses bootstrapping as an assessment technique. We have also im
 \subsubsection{Lasso regression}
 
 \subsection{Terrain data}
-\begin{figure}[htb] 
+The models were tested on terraindata over Norway. The full terrain that the project was based on can be seen in figure \ref{fig:terrain_Norway}. The small patch from the terrain data that was analyzed by using the regression models can be seen in figure \ref{fig:terrain_Norway_patch}. The size of the patch analyzed was 20 datapoints in each direction, making a total of 400 datapoints.
+
+\begin{figure}[H] 
    \centering
-   \begin{subfigure}[b]{0.45\textwidth}
+   \begin{subfigure}[b]{0.35\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{../assets/terrain_n59_e010.png} 
+    \includegraphics[width=\textwidth]{../assets/Terrain_SRTM_data_norway_1.png} 
     \caption{}
     \label{fig:terrain_Norway}
    \end{subfigure}
    \quad
-   \begin{subfigure}[b]{0.45\textwidth}
+   \begin{subfigure}[b]{0.55\textwidth}
     \centering
     \includegraphics[width=\textwidth]{../assets/part_of_terrain.png} 
     \caption{}
+    \label{fig:terrain_Norway_patch}
    \end{subfigure}
-   \caption{(a) Terrain data over Norway 59\degree north, 10\degree east. (b) Small part of the terrain data.}
+   \caption{(a) Terrain data over Norway. (b) Small part of the terrain data consisting of 400 datapoints.}
 \end{figure} 
 
 \subsubsection{OLS}
-\begin{figure}[htb] 
+Ordinary least squares method was performed on the terrain data, the results from  \autoref{fig:test-train-error} shows the test-train error-plot obtained by using cross validation with increasing degree to find the polynomial degree which gives the lowest MSE for linear regression. A minimum is reached at \ensuremath{d=12}. \autoref{fig:OLS-estimate} shows the result of performing OLS with $d=12$ on the terrain dataset. We obtain MSE and R2-scores of 160.9 and 0.9156, respectively. 
+
+
+\begin{figure}[H] 
    \centering
-   \begin{subfigure}[b]{0.45\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{../assets/terrain_ols_error_plot.png} 
+   \begin{subfigure}[b]{0.51\textwidth}
+      \centering
+    \includegraphics[width=\textwidth]{../assets/terrain_ols_error_plot.png}
     \caption{}
-    
+    \label{fig:test-train-error}
    \end{subfigure}
    \quad
    \begin{subfigure}[b]{0.45\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{../assets/Terrain_OLS_bestdegree.png} 
+    \includegraphics[width=\textwidth]{../assets/Terrain_OLS_bestdegree_new.png} 
     \caption{}
+    \label{fig:OLS-estimate}
    \end{subfigure}
-   \caption{(a) (b) 
+   \caption{(a) The test and training error as a function of polynomial degree. (b) The result of OLS performed on the terrain data with degree=12
    }
    \label{fig:terrain-OLS}
 \end{figure} 
 
+The confidence intervals of the parameters $\beta$ were also calculated for the OLS regression. The regression parameters $\beta$ are shown in figure \ref{fig:OLS_CI}.
+
+\begin{figure}[H]
+ \centering
+    \includegraphics[width=0.8\textwidth]{../assets/terrain_OLS_CI.png} 
+    \caption{The regression parameters $\beta$ for the OLS regression method, calculated with a confidence interval of 95\%}
+    \label{fig:OLS_CI}
+\end{figure}
+
 
 \subsubsection{Ridge regression}
+\autoref{fig:ridge_regularization} depicts the computed regularization path MSE$(d,\log_{10}(\lambda))$ with 5-fold cross validation. The minimum MSE is found to be 2.020 for \ensuremath{d=19} and \ensuremath{\lambda=1.311\cdot 10^{-10}}. \autoref{fig:ridge_estimate} shows the result of performing Ridge regression with $d=19$ and $\lambda=1.311\cdot 10^{-10}$ on the terrain dataset. We obtain MSE and R2-scores of 0.9099 and 0.9995, respectively. 
 
-\begin{figure}[htb] 
+\begin{figure}[H] 
    \centering
-   \begin{subfigure}[b]{0.45\textwidth}
+   \begin{subfigure}[b]{0.56\textwidth}
     \centering
     \includegraphics[width=\textwidth]{../assets/terrain-ridge-degree-lambda-colormap.png} 
     \caption{}
-    
+    \label{fig:ridge_regularization}
    \end{subfigure}
    \quad
-   \begin{subfigure}[b]{0.45\textwidth}
+   \begin{subfigure}[b]{0.4\textwidth}
     \centering
     \includegraphics[width=\textwidth]{../assets/Terrain_ridge_bestdegree.png} 
     \caption{}
+    \label{fig:ridge_estimate}
    \end{subfigure}
-   \caption{(a) (b) 
+   \caption{(a) Color map: Defining the MSE by color. The MSE is calculated for every combination of $\lambda$ and the degree of polynomial. Degrees up to 30 and $\lambda$ in the interval $\log_{10}[ -12,0 $] divided into 35 uniformly spaced values, was used to find the best parameters. \\ (b) The result of Ridge performed on the terrain data with degree=19 and $\lambda=1.311\cdot 10^{-10}$.
    }
    \label{fig:terrain-ridge}
 \end{figure} 
 
 \subsubsection{Lasso regression}
+\autoref{fig:lasso_regularization} depicts the computed regularization path MSE$(d,\log_{10}(\lambda))$ with 5-fold cross validation. The minimum MSE is found with \ensuremath{d=18} and \ensuremath{\lambda=2.22 \cdot 10^{-3}}. \autoref{fig:lasso-estimate} shows the result of performing Ridge regression with $d=18$ and $\lambda=2.22 \cdot 10^{-3}$ on the terrain dataset. We obtain MSE and R2-scores of 13.39 and 0.9929, respectively. 
 
-\begin{figure}[htb] 
+\begin{figure}[H] 
    \centering
-   \begin{subfigure}[b]{0.45\textwidth}
+   \begin{subfigure}[b]{0.56\textwidth}
     \centering
     \includegraphics[width=\textwidth]{../assets/terrain-lasso-degree-lambda-colormap.png} 
     \caption{}
-    
+    \label{fig:lasso_regularization}
    \end{subfigure}
    \quad
-   \begin{subfigure}[b]{0.45\textwidth}
+   \begin{subfigure}[b]{0.4\textwidth}
     \centering
     \includegraphics[width=\textwidth]{../assets/Terrain_lasso_bestdegree.png} 
     \caption{}
+    \label{fig:lasso-estimate}
    \end{subfigure}
-   \caption{(a) (b) 
-   }
+   \caption{(a) Color map: Defining the MSE by color. The MSE is calculated for every combination of $\lambda$ and the degree of polynomial. Degrees up to 50 and $\lambda$ in the interval $\log_{10}[ -10,0 $] divided into 50 uniformly spaced values was used to find the best parameters. \\ (b) The result of Lasso performed on the terrain data with degree=18 and $\lambda=2.22 \cdot 10^{-3}$.}
    \label{fig:terrain-lasso}
 \end{figure} 
 

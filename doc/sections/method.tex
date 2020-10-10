@@ -2,7 +2,7 @@
 \begin{document}
 
 \section{Method and implementation}\label{sec:method}
-The implementation of the code is pretty straight forward, having the regression models in a separate class, for easy use and access. Everything that has something to do with franke's function, for example plotting of the function or accumulation of data from the function is collected in a python file \verb|franke.py|. The resampling techniques is also gathered in a separate python file containing functions used for bootstrap, k-folds and cross validation in the python file \verb|assesment.py|. The last python file worth mentioning is \verb|utils.py| which is a collection of a variety of different functions that is handy during the entire project, including a mean squared error function, $R^2$ score function, a function which makes a design matrix, a single value decomposition function and a bit other convenient functions.
+The implementation of the code is pretty straight forward, having the regression models in a separate class, for easy use and access. Everything that has something to do with Franke's function, for example plotting of the function or accumulation of data from the function is collected in a python file \verb|franke.py|. The main codes is \verb|franke.py| and \verb|terraincoding.py| where most of the parts that has to do with the terrain is coded. The resampling techniques is also gathered in a separate python file containing functions used for bootstrap, k-folds and cross validation in the python file \verb|assesment.py|. The last python file worth mentioning is \verb|utils.py| which is a collection of a variety of different functions that is handy during the entire project, including a mean squared error function, $R^2$ score function, a function which makes a design matrix, a single value decomposition function and a bit other convenient functions.
 
 \subsection{Datasets}
 In this work, we study regression on two different datasets. The first dataset is generated from the known two-dimensional Franke's function \cite{FrankeRichard1979}. The second dataset is extracted from real terrain data downloaded from EarthExplorer \cite{EarthExplorer}. 
@@ -15,7 +15,7 @@ A dataset, \ensuremath{\mathcal{L}}, is generated with Franke's function (\cref{
 \end{align*} for \ensuremath{z(x_i,y_i)=f(x_i,y_i)+\epsilon_i} for \ensuremath{i \in [1, n]}
 
 \subsubsection{Terrain data}
-The terrain data is saved as a standard GeoTIFF image file in which a grid of pixels compose an image. In our case, each pixel has a grayscale value. To fit the data to the regression models, we interpret each pixel value as a function value of some unknown function \ensuremath{z(x,y)=f(x,y)+\epsilon}, with both \ensuremath{f(x,y)} and $\epsilon$ are unknowns. We parametrize the grid to obtain the \ensuremath{(x,y)}-tuples needed to construct the design matrix. 
+The terrain data is saved as a standard GeoTIFF image file in which a grid of pixels compose an image. In our case, each pixel has a grayscale value. To fit the data to the regression models, we interpret each pixel value as a function value of some unknown function \ensuremath{z(x,y)=f(x,y)+\epsilon}, with both \ensuremath{f(x,y)} and $\epsilon$ are unknowns. We parametrize the grid to obtain the \ensuremath{(x,y)}-tuples needed to construct the design matrix. A a small patch of the terrain data was used in the following analysis due to limited time and RAM-capacities of the computers used.
 
 \subsection{The design matrix}
 To create the design matrix, the $x$ and $y$ arrays are sent into a function together with the desired degree of polynomial. Then the function checks the lengths of the arrays and the degree wanted, and uses this to calculate the dimensions of the design matrix needed to have the matrix on the form like the Vandermonde matrix discussed in the theory section. Then a double for loop is used to fill an identity matrix of the desired dimensions with the preferred $x$ and $y$ combinations to represent the right polynomials.
@@ -34,7 +34,7 @@ Then the ridge coefficient vector is calculated the way explained in the theory 
 \end{python}
 Where the \verb|linalg| package is being used to invert the matrix. After this the prediction is calculated by taking the product of the design matrix and the calculated betas.
 
-\subsubsection{Ordinary least squares}
+\subsubsection{OLS}
 The OLS method is computed by using the ridge class, which was the reason the ridge class was explained first. The difference between the implementations is that in OLS, $\lambda=0$. Which makes it quiet straight forward to call the class and accessing the methods.
 
 \subsubsection{Lasso}
