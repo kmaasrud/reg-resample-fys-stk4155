@@ -40,7 +40,7 @@ When performing the different regression methods, it is important to sort the da
 Franke's function is a two dimensional function defined by the components $x$ and $y$. Then it is instinctive to have a design matrix $X$ also built up by $x$ and $y$ components into a $n\times p$ matrix, the following way
 
 \begin{equation*}
-X=  \begin{pmatrix}
+\mathbf X=  \begin{pmatrix}
    1& x_0 & y_0 & x_0^2 & x_0y_0 & y_0^2 & \ldots & x_0^d y_0^{p-d}\\
     1& x_1 & y_1 & x_1^2 & x_1y_1 & y_1^2 & \ldots & x_1^d y_1^{p-d}\\
     & &  &  &  &  & \vdots & \\
@@ -53,7 +53,7 @@ Where the $d$ is the degree of polynomial. Making the degree higher leads to mor
 By having different weights $\beta$ in front of each term in the design matrix, it is possible to calculate how large each term in the polynomials should be in order to make the best approximation. This is the clue of having a design matrix built up by $x$ and $y$ components, making it possible to approximate the polynomials which will fit the Franke's function best. Then the approximation can be written as the following
 
 \begin{equation}
-    \tilde{y}=X\beta+\epsilon
+    \hat{\mathbf y}=\mathbf X\beta+\epsilon
 \end{equation}
 
 Where $\epsilon$ is the error. This can be written as
@@ -63,7 +63,7 @@ Where $\epsilon$ is the error. This can be written as
 \setlength{\arraycolsep}{2.5pt} % default: 5pt
 \medmuskip = 1mu % default: 4mu plus 2mu minus 4mu
 \begin{equation*}
-  \tilde{y}=  \begin{pmatrix}
+  \hat{\mathbf y}=  \begin{pmatrix}
     \epsilon_0 & 1 & \beta_0 x_0 &  \beta_1 y_0 &  \beta_2 x_0^2 &  \beta_3 x_0y_0 &  \beta_4 y_0^2 & \ldots &  \beta_5 x_0^d y_0^{p-d}\\
     \epsilon_1 & 1 & \beta_0 x_1 &  \beta_1 y_1 &  \beta_2 x_1^2 &  \beta_3 x_1y_1 &  \beta_4 y_1^2 & \ldots &  \beta_5 x_1^d y_1^{p-d}\\
      & &  &  &  &  & \vdots & \\
@@ -77,16 +77,14 @@ Where $\epsilon$ is the error. This can be written as
 Reference to be added to the bib file:
 \end{comment}
 
-
-
 \subsection{Linear regression}
-The goal of a linear regression model is to find the coefficients $\hat{\mathbf \beta}$ best suited for predicting new data via this expression:
+The goal of a linear regression model is to find these coefficients $\hat{\mathbf \beta}$, which are best suited for predicting new data via the expression:
 
 \begin{equation*}
   \hat{\mathbf y} = \mathbf X\hat{\mathbf \beta},
 \end{equation*}
 
-where $\mathbf X$ is the design matrix constructed from the input data, and $\hat{\mathbf y}$ is the resulting prediction. To achieve this, we define a "cost function" of sorts, that evaluates each coefficients ability to predict the initial training dataset. We then find the $\hat{\mathbf \beta}$ that minimizes this cost function. More formally put, we want to find
+where $\mathbf X$ is the design matrix constructed from the input data (as explained above), and $\hat{\mathbf y}$ is the resulting prediction. To achieve this, we define a "cost function" of sorts, that evaluates each coefficients ability to predict the initial training dataset. We then find the $\hat{\mathbf \beta}$ that minimizes this cost function. More formally put, we want to find
 
 \begin{equation}
   \hat{\mathbf \beta} = \underset{\beta}{\arg \min}\ C(\beta),
@@ -141,7 +139,7 @@ which - by the same procedure as shown in \hyperref[sec:L0_matrix_form]{appenix 
 % -----------------------------------
 \subsection{Assessment}
 \subsubsection{$K$-fold cross-validation}
-When faced with the issue of a small dataset, a good solution to circumvent issues is to utilize whats called $K$-fold cross-validation. It involves splitting the dataset in to $K$ equally sized "folds", and using each fold sequentially as the validation set, whilst training on the others. Say, for example, that we set $K=6$. In this example we would first train our model on the last $5$ datasets and evaluate the skill of our model by trying to predict the first. The evaluation is done by calculating the $R^2$ score, MSE or similar. Thereafter, we use the second fold as the testing set, train on the others, and so forth. The final cross-validation value is the mean of all the calculated statistics.
+When faced with the issue of a small dataset, a good solution to circumvent issues during assessment is to utilize whats called $K$-fold cross-validation. It involves splitting the dataset in to $K$ equally sized "folds", and using each fold sequentially as the validation set, whilst training on the others. Say, for example, that we set $K=6$. In this example we would first train our model on the last $5$ datasets and evaluate the skill of our model by trying to predict the first. The evaluation is done by calculating the $R^2$ score, MSE or similar. Thereafter, we use the second fold as the testing set, train on the others, and so forth. The final cross-validation value is the mean of all the calculated statistics.
 
 This is especially a great tool when trying to find the best parameter $\alpha$ present in a model to minimize a certain error/statistic. Cross-validation will then serve as a function we want to minimize to achieve the best result, namely
 
