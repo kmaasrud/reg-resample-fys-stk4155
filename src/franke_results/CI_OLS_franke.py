@@ -11,8 +11,7 @@ sys.path.insert(0, parentdir)
 
 from franke import franke
 from utils import MSE, design_matrix, split_and_scale, mean_value, CI
-from regression_methods import OLS, Lasso, Ridge
-from assessment import bootstrap
+from regression_methods import OLS
 
 
 N = 100
