@@ -126,22 +126,8 @@ def OLS_terrain(*args):
         #plt.title('Ridge regression')
         if 'save' in args :
             plt.tight_layout()
-            plt.savefig('Terrain_ridge_bestdegree.png',bbox_inches='tight', dpi=300)
-        plt.show()
-
-        """
-        #Plotting the OLS terrain result with the best degree
-        plt.figure()
-        #plt.title("OLS")
-        plt.imshow(z_pred.reshape(y_arr, x_arr), cmap='bone', extent=[1010,1030,1530,1510])
-        plt.xticks(rotation=45)
-        plt.xlabel('X')
-        plt.ylabel('Y')
-        if 'save' in args :
-            plt.tight_layout()
             plt.savefig('Terrain_OLS_bestdegree.png',bbox_inches='tight', dpi=300)
         plt.show()
-        """
 
         print(f"OLS-Mean Squared Error: {MSE(z1,z_pred)}")
         print(f"OLS-R2-score: {R2(z1,z_pred)}")
@@ -173,7 +159,7 @@ def ridge(*args):
     n_lmb = 35      #35
 
     #Defining ranges to loop over
-    lambdas = np.logspace(-10,0, n_lmb)
+    lambdas = np.logspace(-4,0, n_lmb)
     interval_degrees = np.arange(1, maxd+1)
 
     mse_values, best_deg, best_lmb, min_MSE=best_d_l(maxd, n_lmb, interval_degrees, lambdas, x1, y1, z1, 'Ridge')
@@ -182,7 +168,7 @@ def ridge(*args):
     print(f"with lambda={best_lmb}, and degree={best_deg}")
 
     # Plot MSE with color map
-    im = plt.imshow(mse_values, cmap=plt.cm.RdBu, extent = [-10, 0, 1, maxd],
+    im = plt.imshow(mse_values, cmap=plt.cm.RdBu, extent = [-4, 0, 1, maxd],
                 interpolation=None, aspect='auto')
     cbar = plt.colorbar(im)
     cbar.set_label('MSE', rotation=90)
@@ -244,7 +230,7 @@ def lasso(*args):
     n_lmb = 35  #35 for ridge
 
     #Defining ranges to loop over
-    lambdas = np.logspace(-10,0, n_lmb)
+    lambdas = np.logspace(-12,0, n_lmb)
     interval_degrees = np.arange(1, maxd+1)
 
     #Returns the best lambdas and degrees, along with some MSE values
@@ -254,7 +240,7 @@ def lasso(*args):
     print(f"with lambda={best_lmb}, and degree={best_deg}")
 
     # Plot MSE with color map
-    im = plt.imshow(mse_values, cmap=plt.cm.RdBu, extent = [-10, 0, 1, maxd],
+    im = plt.imshow(mse_values, cmap=plt.cm.RdBu, extent = [-12, 0, 1, maxd],
                 interpolation=None, aspect='auto')
     cbar = plt.colorbar(im)
     cbar.set_label('MSE', rotation=90)
@@ -296,6 +282,6 @@ OLS_plot= Perform OLS on the choosen part of terrain, and show the plot
 CI=Find the confidence intervals and plot them"""
 
 """If you want to save the figures, use 'save' as argument"""
-OLS_terrain('best_deg', 'OLS_plot', 'CI')
-#ridge()
+#OLS_terrain('best_deg', 'OLS_plot', 'CI')
+ridge()
 #lasso()
