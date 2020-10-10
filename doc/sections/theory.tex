@@ -25,19 +25,17 @@ Franke's function is a function which is often used to test different regression
 
 and we define it for the interval $x,y\in[0,1]$. An illustration of Franke's function can be seen in figure \ref{fig:frankesplot}
 
-\begin{figure}
+\begin{figure}[H]
   \centering
   \includegraphics[width = 3in]{../assets/frankesfunction_plot.png}
-  \caption{Shape of Franke's function which will be used as a interpolating goal.
-  \newline
-  Note to self: Might be better to plot the graph instead of using a figure from the web. Remember to add the source for the figure by using for example bib. \url{https://www.sfu.ca/~ssurjano/franke2d.html}}
+  \caption{Shape of Franke's function which will be used as a interpolating goal \cite{FrankeRichard1979}.}
   \label{fig:frankesplot}
 \end{figure}
 
 \subsubsection{The Vandermonde matrix applied to Franke's function}
 
 
-When performing the different regression methods, it is important to sort the data into a well designed system for easy access and easier calculations. The data which is to be used during the calculations is sorted into a so called Vandermonde matrix, which is also known as a design matrix. A Vandermonde matrix is a matrix where the rows is built up by geometric progression \\%\cite{vandermonde}.
+When performing the different regression methods, it is important to sort the data into a well designed system for easy access and easier calculations. The data which is to be used during the calculations is sorted into a so called Vandermonde matrix, which is also known as a design matrix. A Vandermonde matrix is a matrix where the rows is built up by geometric progression \cite{vandermonde}.
 
 Franke's function is a two dimensional function defined by the components $x$ and $y$. Then it is instinctive to have a design matrix $X$ also built up by $x$ and $y$ components into a $n\times p$ matrix, the following way
 
