@@ -39,6 +39,9 @@ ax = fig.gca(projection='3d')
 
 def plot(X, y, ax, title):
     ax.plot_trisurf(X[:,1], X[:,2], y, linewidth=0, antialiased=False)
+    ax.set_xlabel('$x$')
+    ax.set_ylabel('$y$')
+    ax.set_zlabel('$z$')
     plt.savefig(os.path.join(out_dir, title))
     plt.cla()
     
