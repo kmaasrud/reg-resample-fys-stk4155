@@ -143,11 +143,11 @@ def OLS_terrain(*args):
         beta_lower, beta_upper =CI(X, beta, 95, z1, z_pred, n)
 
         #Scaling the betas
-        beta_lower = (np.array(beta_lower))/10000000
-        beta_upper = (np.array(beta_upper))/10000000
+        beta_lower = (np.array(beta_lower))
+        beta_upper = (np.array(beta_upper))
 
         #Plotting the confidence intervals for OLS terrain
-        plt.plot(beta_x, beta/10000000, 'mo', label='betas')
+        plt.plot(beta_x, beta, 'mo', label='betas')
         plt.plot(beta_x, beta_upper, 'k+')
         plt.plot(beta_x, beta_lower, 'k+')
         plt.xlabel('Betas')
@@ -193,7 +193,7 @@ def ridge(*args):
     # A=(X.T @ X) + best_lmb*I
     # beta=SVDinv(A) @ X.T @ z1
     # z_pred=X@beta
-    
+
     Ridge_reg = Ridge(X,z1,best_lmb)
     beta = Ridge_reg.fit_beta()
     z_pred=Ridge_reg.predict(X)
@@ -231,11 +231,11 @@ def ridge(*args):
 def lasso(*args):
     """Finding the best degree of polynomial and lambda"""
     #Defining max degree and max lambda to check
-    maxd = 50   #30 for ridge
-    n_lmb = 50  #35 for ridge
+    maxd = 30   #30 for ridge
+    n_lmb = 35  #35 for ridge
 
     #Defining ranges to loop over
-    lambdas = np.logspace(-10,0, n_lmb)
+    lambdas = np.logspace(-12,0, n_lmb)
     interval_degrees = np.arange(1, maxd+1)
 
     #Returns the best lambdas and degrees, along with some MSE values
@@ -245,7 +245,7 @@ def lasso(*args):
     print(f"with lambda={best_lmb}, and degree={best_deg}")
 
     # Plot MSE with color map
-    im = plt.imshow(mse_values, cmap=plt.cm.RdBu, extent = [-10, 0, 1, maxd],
+    im = plt.imshow(mse_values, cmap=plt.cm.RdBu, extent = [-12, 0, 1, maxd],
                 interpolation=None, aspect='auto')
     cbar = plt.colorbar(im)
     cbar.set_label('MSE', rotation=90)
@@ -260,7 +260,7 @@ def lasso(*args):
     """Performing lasso with the best degree and best lambda"""
     X = design_matrix(x1, y1, best_deg)
 
-    sklearn_lasso = linear_model.Lasso(alpha=best_lmb)
+    sklearn_lasso = linear_model.Lasso(alpha=best_lmb, max_iter=5000)
     fit=sklearn_lasso.fit(X,z1)
     z_pred=fit.predict(X)
 
@@ -287,6 +287,6 @@ OLS_plot= Perform OLS on the choosen part of terrain, and show the plot
 CI=Find the confidence intervals and plot them"""
 
 """If you want to save the figures, use 'save' as argument"""
-OLS_terrain('best_deg', 'OLS_plot', 'CI')
+#OLS_terrain('best_deg', 'OLS_plot', 'CI')
 #ridge('save')
-#lasso('save')
+lasso()
