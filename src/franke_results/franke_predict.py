@@ -16,7 +16,7 @@ from assessment import bootstrap
 
 out_dir = "../../doc/assets/"
 
-N = 100
+N = 500
 deg = 12
 lmb = 2
 x = np.linspace(0, 1, N); y = np.linspace(0, 1, N)
