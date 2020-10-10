@@ -1,8 +1,5 @@
 import numpy as np
 from sklearn import linear_model
-from numba import jit
-
-np.random.seed(2020)        # set a seed to ensure reproducability
 
 
 class Ridge():
@@ -46,15 +43,3 @@ class Lasso(Ridge):
         sklearn_lasso = linear_model.Lasso(alpha=self.lmb)
         sklearn_lasso.fit(self.X, self.y)
         return sklearn_lasso.coef_
-
-# simple test for linear case
-if __name__ == '__main__':
-    x = np.arange(50)[:, np.newaxis]
-    y = np.array([i + np.random.rand() for i in range(50)])[:, np.newaxis]
-    nlambdas = 20
-    lambdas = np.logspace(-4, 1, nlambdas)
-    for i in range(nlambdas):
-        lmb = lambdas[i]
-    Ridge_test = Ridge(x, y,lmb)
-    beta = Ridge_test.fit_beta()
-    p, y_hat = Ridge_test.predict()
