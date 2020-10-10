@@ -15,24 +15,24 @@ We use a dataset of $N=100$ datapoints generated from the Franke function (inclu
 
 Figure \ref{fig:result_reg_plots} shows the predictions of this data, using different regression methods. There's some apparent overfitting in the OLS regressed model. The Ridge model comes quite close, while the Lasso does not give any satisfactory results. 
 
-\begin{figure}[h]
+\begin{figure}[htb!]
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
-        \includegraphics[width=1.2\textwidth]{../assets/ols_franke_plot.png}
+        \includegraphics[trim=2.4cm 1cm 1.4cm 1cm, clip,width=1.1\textwidth]{../assets/ols_franke_plot.png}
         \caption{OLS}
         \label{fig:result_ols_plot}
     \end{subfigure}
     \quad
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
-        \includegraphics[width=1.2\textwidth]{../assets/lasso_franke_plot.png}
+        \includegraphics[trim=2.4cm 1cm 1.4cm 1cm, clip,width=1.1\textwidth]{../assets/lasso_franke_plot.png}
         \caption{Lasso}
     \end{subfigure}
     
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
-        \includegraphics[width=1.2\textwidth]{../assets/ridge_franke_plot.png}
+        \includegraphics[trim=2.4cm 1cm 1.4cm 1cm, clip,width=1.1\textwidth]{../assets/ridge_franke_plot.png}
         \caption{Ridge}
     \end{subfigure}
     \caption{Prediction of the data shown in figure \ref{fig:result_actual_plot} using different regression methods.}

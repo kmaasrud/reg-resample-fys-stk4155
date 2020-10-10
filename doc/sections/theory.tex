@@ -27,7 +27,7 @@ and we define it for the interval $x,y\in[0,1]$. An illustration of Franke's fun
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width = 3in]{../assets/actual_franke_plot.png}
+  \includegraphics[trim=2.4cm 1cm 1.4cm 1cm, clip,width = 3in]{../assets/actual_franke_plot.png}
   \caption{Shape of Franke's function which will be used as a interpolating goal}
   \label{fig:frankesplot}
 \end{figure}
@@ -153,7 +153,7 @@ where $L$ is the error function we want to optimize, $y_i$ are the true values, 
 
 % -----------------------------------
 \subsubsection{The Bootstrap}
-
+Bootstrapping is another validation method that effectively resamples a smaller dataset. It involves creating $B$ bootstraping samples, each the same size of the original dataset. The data points in each sample are drawn from the original dataset randomly with replacement, which means data points can appear multiple times in the same bootstrapping set. For each bootstrapping set, the desired statistic (in our case, the MSE, bias or variance) is calculated and the mean over all bootstrapping sets is the final bootstrap value of said statistic.
 
 \subsection{Bias-variance decomposition}\label{sec:bv_decomp}
 Consider a dataset \ensuremath{\mathcal{L}} consisting of the data \ensuremath{\mathbf{X}_\mathcal{L}=\{(y_j, \boldsymbol{x}_j)} for \ensuremath{j=0\ldots n-1\}}. We assume that the true data is generated from the noisy model

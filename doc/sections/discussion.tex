@@ -4,29 +4,35 @@
 \section{Discussion}\label{sec:discussion}
 \subsection{Methods applied to Franke's function}
 
+As shown in figure \ref{fig:result_complexity}, there's a risk of overfitting by increasing the complexity of the model. An ideal polynomial degree for the design matrix may be $8$, judging by this plot. In addition, we experience the bias-variance tradeoff (as shown by figure \ref{fig:result_bias_variance}) in our model, albeit not as distinctly as many textbooks showcase it. It's also worth noting that we've found an extreme sensitivity with regards to the number of data points, which clearly brings out the importance of assessing the performance of our regressed model. 
+
+Looking at the real world results of our regression modelling, we notice potential in predicting terrain data, as we are clearly able to mimic the actual Franke function values. The resulting plot from our Lasso regression stands out as nonsensical compared to the other two, even though it utilizes \verb|sklearn|'s Lasso implementation. This is probably a fault of ours, and how we've wrapped the module.
+
 \subsection{Methods applied to Terrain data}
 By comparing the statistical values MSE and $R^2$ for the three models it is possible to determine which regression model has the best prediction to the terrain dataset. Since the MSE is a statistical value of the errors, the less the value of MSE the better. The $R^2$ score is a measurement of how well the model predicts, and account for the variance. Closer to 1 the $R^2$ score is, the better the prediction is.\\
 
-Having a look at table \ref{tab:statistical_results}, the MSE for OLS is a bit high having a value of 160.9 with a $R^2$ score that is doing quiet well, 0.9156. The OLS regression parameters in figure \ref{fig:OLS_CI} also seem to have quiet low variance which is supporting the good $R^2$ score. Looking at the Ridge results it is easy to see that the MSE and $R^2$ score are extremely good with about the value of 1 for each one. The LASSO regression was also doing quite good with a $R^2$ score that is about the same as Ridge, but with a bit higher MSE, 9.56.  All though the methods are predicting the data quiet good, Ridge and LASSO having such low MSE and high $R^2$ score, makes them belong a couple of levels higher than OLS.
+Having a look at table \ref{tab:statistical_results}, the MSE for OLS is a bit high having a value of 160.9 with a $R^2$ score that is doing quite well, 0.9156. The OLS regression parameters in figure \ref{fig:OLS_CI} also seem to have quite low variance which is supporting the good $R^2$ score. Looking at the Ridge results it is easy to see that the MSE and $R^2$ score are extremely good with about the value of 1 for each one. The LASSO regression was also doing quite good with a $R^2$ score that is about the same as Ridge, but with a bit higher MSE, 9.56.  All though the methods are predicting the data quite good, Ridge and LASSO having such low MSE and high $R^2$ score, makes them belong a couple of levels higher than OLS.
 
 \begin{table}[H]
-\begin{center}
-\begin{tabular}{ |c|c|c|c|c| } 
- \hline
-  & OLS & Ridge & & LASSO \\ 
- \hline
- MSE & 160.9 & & 0.9099 & 9.56\\
- \hline
- $R^2$ & 0.9156 & & 0.9995 & 0.9949 \\ 
- \hline
+\centering
+\caption{The MSE and $R^2$ values from using different regression methods on the terrain dataset}
+\begin{tabular}{ ccccc } 
+ \toprule
+  & OLS & Ridge &Ridge$_{\lambda \in \log_{10}[-4,0]}$ & LASSO \\ 
+ \midrule
+ MSE & 160.9 & 0.9099 & 3.748 & 9.56\\
+ 
+ $R^2$ & 0.9156 & 0.9995& 0.9980 & 0.9949 \\ 
+ \bottomrule
 \end{tabular}
 \label{tab:statistical_results}
-\caption{The MSE and $R^2$ values from using different regression methods on the terrain dataset}
-\end{center}
 \end{table}
 
-Knowing that OLS is Ridge having $\lambda$=0, it is within reason to assume that the results of Ridge and OLS could have been more similar, due to the low $\lambda=1.311\cdot10^{-10}$ used in Ridge. But then remembering the computational expense used to calculate the best d and $\lambda$ for both Ridge and LASSO it makes sense having Ridge and LASSO that good. LASSO was especially computational expensive. Knowing that there is no analytical solution to LASSO, opened up for the idea of treating the LASSO method with a bit more iterations than Ridge. LASSO was treated with the privilege of gridding over 50 different values for both $\lambda$ and $d$, searching for the lowest MSE. This explains why LASSO is showing such a good result, but because LASSO was a bit more computational heavy than Ridge, and still got a little bit worse result, this puts LASSO in a 2nd place.
+Knowing that OLS is Ridge having $\lambda$=0, it is within reason to assume that the results of Ridge and OLS could have been more similar, due to the low $\lambda=1.311\cdot10^{-10}$ used in Ridge. But then remembering the computational expense used to calculate the best d and $\lambda$ for both Ridge and LASSO it makes sense having Ridge and LASSO that good.\\
 
+Then computing Ridge, letting the iteration interval for $\lambda$ be in the space of $\log_{10}[-4,0]$ with the same amount of iterations, instead of the basic $\log_{10}[-12,0]$ had quite an inpact on the MSE. Still reading of table \ref{tab:statistical_results} the run gave a MSE value of 3.748, making the MSE increase by a factor of 4.12. This shows that it is important to span the values of $\lambda$ into a large enough space, to be sure that the best $\lambda$ is within reach of the interval.
+
+LASSO was especially computational expensive. Knowing that there is no analytical solution to LASSO, this opened up for the idea of treating the LASSO method with a bit more iterations than Ridge. LASSO was treated with the privilege of gridding over 50 different values for both $\lambda$ and $d$, searching for the lowest MSE, to be sure that the correct parameters were chosen. This ended up with a quite good result. LASSO was a bit more computational heavy than Ridge, and still got a bit worse results, this puts LASSO in a 2nd place.
 
 
 \end{document}
