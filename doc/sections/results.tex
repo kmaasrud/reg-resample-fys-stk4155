@@ -2,9 +2,40 @@
 
 \begin{document}
 \section{Results}\label{sec:results}
+
+\subsubsection{Actual prediction of data}
+We use a dataset of $N=100$ datapoints generated from the Franke function (including noise from the normal distribution, with $\sigma=0.1$), and split it into a training and testing set. Figure \ref{fig:result_actual_plot} shows the testing set plotted in 3D, which is what we aim at recreating.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{../assets/actual_franke_plot.png}
+    \caption{Real valued plot of the testing set of a dataset generated from the Franke function.}
+    \label{fig:result_actual_plot}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=1.2\textwidth]{../assets/ols_franke_plot.png}
+        \caption{OLS}
+        \label{fig:result_ols_plot}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=1.2\textwidth]{../assets/lasso_franke_plot.png}
+        \caption{Lasso}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=1.2\textwidth]{../assets/ridge_franke_plot.png}
+        \caption{Ridge}
+    \end{subfigure}
+    \caption{Prediction of the data shown in figure \ref{fig:result_actual_plot} using different regression methods.}
+\end{figure}
+
 \subsection{Franke's function}
 
-\subsubsection{OLS regression}
 \subsubsection{The bias-variance tradeoff}
 With a dataset of values produced from Franke's function (number of datapoints $N=18$, with random normally distributed noise added), we've fitted a model based on the training set and predicted new data based on the testing set. This was done with a design matrix of increasing degrees, from $1$ to $9$. The following figure \ref{fig:result_complexity} is a plot relating the mean squared error of the model to the complexity (or degree).
 
@@ -18,10 +49,10 @@ With a dataset of values produced from Franke's function (number of datapoints $
 Once again, we produce a dataset from the Franke function (number of datapoints $N=40$, no noise added) and fit the model to design matrices of varying degree, from 1 to 15. Using The Bootstrap, we record the bias and variance (as they are explained in section \ref{sec:bv_decomp}. Figure \ref{fig:result_bias_variance} shows their relation with increasing complexity/degree of polynomial. 
 
 \begin{figure}[h]
-    \label{fig:result_bias_variance}
     \centering
     \includegraphics[width=\textwidth]{../assets/var.png}
     \caption{Bias and variance plotted in relation to the polynomial degree of the model.}
+    \label{fig:result_bias_variance}
 \end{figure}
 
 The above results uses bootstrapping as an assessment technique. We have also implemented $K$-fold cross-validation, and figure \ref{fig:result_cv_boot_mse} shows how their calculated MSE compares
@@ -32,9 +63,6 @@ The above results uses bootstrapping as an assessment technique. We have also im
     \caption{Mean squared error calculated with $K=20$-fold cross-validation and bootstrapping with $B=100$.}
     \label{fig:result_cv_boot_mse}
 \end{figure}
-
-\subsubsection{Ridge regression}
-\subsubsection{Lasso regression}
 
 \subsection{Terrain data}
 The models were tested on terraindata over Norway. The full terrain that the project was based on can be seen in figure \ref{fig:terrain_Norway}. The small patch from the terrain data that was analyzed by using the regression models can be seen in figure \ref{fig:terrain_Norway_patch}. The size of the patch analyzed was 20 datapoints in each direction, making a total of 400 datapoints.
@@ -85,7 +113,7 @@ The confidence intervals of the parameters $\beta$ were also calculated for the 
 
 \begin{figure}[H]
  \centering
-    \includegraphics[width=0.8\textwidth]{../assets/terrain_OLS_CI.png} 
+    \includegraphics[width=0.8\textwidth]{../assets/terrain_OLS_CI_new.png} 
     \caption{The regression parameters $\beta$ for the OLS regression method, calculated with a confidence interval of 95\%}
     \label{fig:OLS_CI}
 \end{figure}
@@ -115,7 +143,7 @@ The confidence intervals of the parameters $\beta$ were also calculated for the 
 \end{figure} 
 
 \subsubsection{Lasso regression}
-\autoref{fig:lasso_regularization} depicts the computed regularization path MSE$(d,\log_{10}(\lambda))$ with 5-fold cross validation. The minimum MSE is found with \ensuremath{d=18} and \ensuremath{\lambda=2.22 \cdot 10^{-3}}. \autoref{fig:lasso-estimate} shows the result of performing Ridge regression with $d=18$ and $\lambda=2.22 \cdot 10^{-3}$ on the terrain dataset. We obtain MSE and R2-scores of 13.39 and 0.9929, respectively. 
+\autoref{fig:lasso_regularization} depicts the computed regularization path MSE$(d,\log_{10}(\lambda))$ with 5-fold cross validation. The minimum MSE is found with \ensuremath{d=17} and \ensuremath{\lambda=1.50 \cdot 10^{-3}}. \autoref{fig:lasso-estimate} shows the result of performing Ridge regression with $d=18$ and $\lambda=2.22 \cdot 10^{-3}$ on the terrain dataset. We obtain MSE and R2-scores of 11.01 and 0.9942, respectively. 
 
 \begin{figure}[H] 
    \centering
@@ -132,7 +160,7 @@ The confidence intervals of the parameters $\beta$ were also calculated for the 
     \caption{}
     \label{fig:lasso-estimate}
    \end{subfigure}
-   \caption{(a) Color map: Defining the MSE by color. The MSE is calculated for every combination of $\lambda$ and the degree of polynomial. Degrees up to 50 and $\lambda$ in the interval $\log_{10}[ -10,0 $] divided into 50 uniformly spaced values was used to find the best parameters. \\ (b) The result of Lasso performed on the terrain data with degree=18 and $\lambda=2.22 \cdot 10^{-3}$.}
+   \caption{(a) Color map: Defining the MSE by color. The MSE is calculated for every combination of $\lambda$ and the degree of polynomial. Degrees up to 30 and $\lambda$ in the interval $\log_{10}[ -10,0 $] divided into 35 uniformly spaced values was used to find the best parameters. \\ (b) The result of Lasso performed on the terrain data with degree=17 and $\lambda=1.50 \cdot 10^{-3}$.}
    \label{fig:terrain-lasso}
 \end{figure} 
 
